@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.time.LocalTime;
 
 import javax.swing.*;
 
@@ -16,6 +17,7 @@ public class Parking extends JFrame {
 		GridLayout grid = new GridLayout(3, 4);
 		grid.setVgap(50);
 		grid.setHgap(50);
+		
 		enter = new JButton("입차");
 		exit = new JButton("출차");
 		charge = new JButton("정산");
@@ -35,7 +37,6 @@ public class Parking extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				new Enter();
-				setVisible(false);
 			}
 		});
 		exit.addActionListener(new ActionListener() {
@@ -44,7 +45,6 @@ public class Parking extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				new Exit();
-				setVisible(false);
 			}
 		});
 		west = new JPanel();
@@ -56,10 +56,72 @@ public class Parking extends JFrame {
 
 		c.add(west, BorderLayout.WEST);
 		c.add(center, BorderLayout.CENTER);
-
 		setSize(800, 500);
 		setVisible(true);
 	}
+	public class Enter extends JFrame {
+		private JButton en = new JButton("입차");
+		private JTextField carnum = new JTextField("");
+		private JTextField num = new JTextField("");
+		public LocalTime entertime;
+		public Enter() {
+			setTitle("입차");
+
+			Container c = getContentPane();
+			c.setLayout(new GridLayout(2, 2));
+			en.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					entertime = LocalTime.now();
+					parking[Integer.parseInt(num.getText()) - 1].setText("<html><body><center>" + carnum.getText() + "<br><br>" + entertime.getHour() 
+					+ "시 " + entertime.getMinute() + "분" + "</center></body></html>");
+					setVisible(false);
+				}
+			});
+
+			c.add(carnum);
+			c.add(num);
+			c.add(en);
+			setSize(300, 300);
+			setVisible(true);
+		}
+	}
+
+	public class Exit extends JFrame {
+		private JButton ex = new JButton("출차");
+		private JButton back = new JButton("돌아가기");
+		private JTextField num = new JTextField("");
+		public LocalTime exittime;
+		public Exit() {
+			setTitle("출차");
+			Container c = getContentPane();
+			c.setLayout(new GridLayout(2, 2));
+			ex.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					exittime = LocalTime.now();
+					parking[Integer.parseInt(num.getText())-1].setText(num.getText() + "번");
+					setVisible(false);
+				}
+			});
+			back.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					new Parking();
+					setVisible(false);
+				}
+			});
+			c.add(num);
+			c.add(ex);
+			c.add(back);
+			setSize(300, 300);
+			setVisible(true);
+		}
+	}
+
 	class mouselistener extends MouseAdapter{
 		public void mouseEntered(MouseEvent e) {
 			JLabel jl = (JLabel)e.getSource();
