@@ -9,8 +9,16 @@ public class Parking extends JFrame {
 	private JPanel center, west;
 	private JButton enter, exit, charge;
 	public JLabel[] parking = new JLabel[12];
+	//Index_info info[] = new Index_info[12];
+	//전역 변수
+	public LocalTime entertime;
+	String c_num ;
+	//
 	public Parking() {
 		db.connect();
+		//db.default_create(); 1번만 쓰고 지워요 테이블 디폴트값 설정 용도
+		
+		
 		setTitle("주차 관리 프로그램");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Container c = getContentPane();
@@ -20,19 +28,37 @@ public class Parking extends JFrame {
 		grid.setVgap(50);
 		grid.setHgap(50);
 		
-		enter = new JButton("입차");
+		enter = new JButton("입차");	
 		exit = new JButton("출차");
 		charge = new JButton("정산");
 		center.setLayout(grid);
-		for (int i = 0; i < 12; i++) {
-			parking[i] = new JLabel(i + 1 + "번");
-			parking[i].setHorizontalAlignment(parking[i].CENTER);
-			parking[i].setBackground(Color.GREEN);
-			parking[i].setOpaque(true);
-			center.add(parking[i]);
-			parking[i].addMouseListener(new mouselistener());
-		}
 		
+		for (int i = 0; i < 12; i++) {
+			if(db.set_default(i+1)) {
+				System.out.println(i+1);
+				entertime = db.lt();
+				c_num =db.getCar_Num(i+1);
+				parking[i] = new JLabel("<html><body><center>" 
+						+ c_num + "<br><br>" + entertime.getHour() 
+						+ "시 " + entertime.getMinute() + "분" + "</center></body></html>");
+				parking[i].setHorizontalAlignment(parking[i].CENTER);
+				parking[i].setBackground(Color.GREEN);
+				parking[i].setOpaque(true);
+				
+				center.add(parking[i]);
+				parking[i].addMouseListener(new mouselistener());
+			}
+			else {
+				parking[i] = new JLabel(i + 1 + "번");
+				parking[i].setHorizontalAlignment(parking[i].CENTER);
+				parking[i].setBackground(Color.GREEN);
+				parking[i].setOpaque(true);
+				center.add(parking[i]);
+				parking[i].addMouseListener(new mouselistener());
+				
+			}
+			
+		}
 		enter.addActionListener(new ActionListener() {
 
 			@Override
@@ -65,7 +91,7 @@ public class Parking extends JFrame {
 		private JButton en = new JButton("입차");
 		private JTextField carnum = new JTextField("car_num");
 		private JTextField num = new JTextField("index_num");
-		public LocalTime entertime;
+		
 		public Enter() {
 			setTitle("입차");
 
@@ -76,11 +102,12 @@ public class Parking extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
+					
 					entertime = LocalTime.now();
 					System.out.println(entertime); 
 					int select_index = Integer.parseInt(num.getText());
-					String c_num = carnum.getText();
-					
+					c_num = carnum.getText();
+					//
 					parking[select_index - 1].setText("<html><body><center>" 
 					+ c_num + "<br><br>" + entertime.getHour() 
 					+ "시 " + entertime.getMinute() + "분" + "</center></body></html>");
