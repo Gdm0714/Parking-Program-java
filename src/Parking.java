@@ -1,9 +1,22 @@
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Container;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-import Cs_Db.*;
-import javax.swing.*;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import Cs_Db.Surprise_Db;
 public class Parking extends JFrame {
 	Surprise_Db db = new Surprise_Db();
 	private JPanel center, west;
@@ -11,12 +24,14 @@ public class Parking extends JFrame {
 	public JLabel[] parking = new JLabel[12];
 	//Index_info info[] = new Index_info[12];
 	//전역 변수
+	
 	public LocalTime entertime;
+	
 	String c_num ;
 	//
 	public Parking() {
 		db.connect();
-		//db.default_create(); 1번만 쓰고 지워요 테이블 디폴트값 설정 용도
+		//db.default_create();// 1번만 쓰고 지워요 테이블 디폴트값 설정 용도
 		
 		
 		setTitle("주차 관리 프로그램");
@@ -34,13 +49,13 @@ public class Parking extends JFrame {
 		center.setLayout(grid);
 		
 		for (int i = 0; i < 12; i++) {
-			if(db.set_default(i+1)) {
+			if(db.check_parking(i+1)) {
 				System.out.println(i+1);
-				entertime = db.lt();
-				c_num =db.getCar_Num(i+1);
+				//+ "시 " + entertime.getMinute() + "분" 
+				c_num =db.get_Car_Num(i+1);
 				parking[i] = new JLabel("<html><body><center>" 
-						+ c_num + "<br><br>" + entertime.getHour() 
-						+ "시 " + entertime.getMinute() + "분" + "</center></body></html>");
+						+ c_num + "<br><br>" + db.get_Init_Time(i+1) 
+						+ "</center></body></html>");
 				parking[i].setHorizontalAlignment(parking[i].CENTER);
 				parking[i].setBackground(Color.GREEN);
 				parking[i].setOpaque(true);
@@ -112,7 +127,7 @@ public class Parking extends JFrame {
 					+ c_num + "<br><br>" + entertime.getHour() 
 					+ "시 " + entertime.getMinute() + "분" + "</center></body></html>");
 					System.out.println(select_index - 1+ c_num);
-					db.init_car(select_index - 1, c_num);
+					db.init_car(select_index - 1, c_num,entertime);
 					setVisible(false);//입력 후 창 닫기
 				}
 			});
@@ -140,7 +155,11 @@ public class Parking extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					exittime = LocalTime.now();
+					db.Out_car(Integer.parseInt(num.getText()));
+					
 					parking[Integer.parseInt(num.getText())-1].setText(num.getText() + "번");
+					
+					
 					setVisible(false);
 				}
 			});

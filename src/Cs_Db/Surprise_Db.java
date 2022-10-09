@@ -1,5 +1,4 @@
 package Cs_Db;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalTime;
+
+
 public class Surprise_Db {
 	 	private String url = "jdbc:mysql://localhost:3306/car_surprise?serverTimezone=UTC";
 	    private String user = "root";
@@ -18,6 +19,8 @@ public class Surprise_Db {
 	    private Statement st;
 	    int re;
 		PreparedStatement pstmt;
+		
+		
 	    public void connect() {
 			try {
 				Class.forName(driverName);
@@ -32,10 +35,10 @@ public class Surprise_Db {
 			}
 		}
 	    
-	    public void init_car(int area_id, String c_num) {//area_num 주차할 공간 인덱스 
+	    public void init_car(int area_id, String c_num, LocalTime time) {//데이터 베이스에 차량 등록 함수
 	    	try {
 	    		area_id +=1; 
-	    		System.out.println("1");
+	    		System.out.println(time);
 	    		String SQL1 = "update car_info set Car_Num='"+c_num+"' where ID="+area_id+";";
 	    		//System.out.println(area_id+c_num);
 	    		System.out.println(SQL1);
@@ -45,6 +48,9 @@ public class Surprise_Db {
 	    		pstmt = connection.prepareStatement(SQL1);
 	    		re = pstmt.executeUpdate();
 	    		
+	    		SQL1 ="update car_info set Init_Time='"+time+"' where ID="+area_id+";";
+	    		pstmt = connection.prepareStatement(SQL1);
+	    		re = pstmt.executeUpdate();
 	    		if(re == 1) {System.out.println("clear!");
 	    		}
 	    		else {System.out.println("retry");
@@ -58,7 +64,7 @@ public class Surprise_Db {
 	    	}
 	    	
 	    }
-	    public void default_create() {
+	    public void default_create() {//최초 1회만 실행
 	    	try {
 	    		
 	    		System.out.println("1");
@@ -84,7 +90,7 @@ public class Surprise_Db {
 	    	}
 	    	
 	    }
-	    public boolean set_default(int i) {
+	    public boolean check_parking(int i) {//데이터 베이스에서 차가 등록 되었는지 확인 하는 함수
 	    	try {
 	    		String SQL1 = "select Parking from car_info where id="+i+";";
 	    		//System.out.println(area_id+c_num);
@@ -105,7 +111,7 @@ public class Surprise_Db {
 	    	}
     		
 	    }
-	    public String getCar_Num(int i) {
+	    public String get_Car_Num(int i) {//데이터 베이스에서 차 이름 받아와서 리턴
 	    	
 	    	try {
 	    		String SQL1 = "select Car_Num from car_info where id="+i+";";
@@ -123,10 +129,52 @@ public class Surprise_Db {
 	    		return " ";
 	    	}	
 	    }
-	    public LocalTime lt() {
-	    	LocalTime l =  LocalTime.now();
-	    	
-	    	return l;
+	    public String get_Init_Time(int i) {//데이터 베이스에 등록된 차량의 입차 시간 리턴
+	    	String Init_Time= "";
+	    	try {
+	    		String SQL1 = "select Init_Time from car_info where id="+i+";";
+	    		rs= st.executeQuery(SQL1);
+	    		if(rs.next()) {
+	    			Init_Time=rs.getTime("Init_Time").toString();
+	    			String front_text = Init_Time.substring(0, 2);
+	    			String back_text = Init_Time.substring(2);
+	    			System.out.println(back_text);
+	    			int t = Integer.parseInt(front_text); 
+	    			t-=9;
+	    			Init_Time = t + back_text;
+	    			System.out.println(Init_Time);
+		    		return Init_Time;
+	    		}
+	    		else {
+	    			return Init_Time;
+	    		}
+	    	}
+	    		catch(Exception e) {
+		    		System.out.println(e.getMessage());
+		    		return Init_Time;
+		    	}
+	    }
+	    public void Out_car(int i) {
+	    	try {
+	    		String SQL1 = "update car_info set Car_Num="+"default"+" where ID="+i+";";
+	    		pstmt = connection.prepareStatement(SQL1);
+	    		re = pstmt.executeUpdate();
+	    		SQL1 ="update car_info set Parking="+0+" where ID="+i+";";
+	    		pstmt = connection.prepareStatement(SQL1);
+	    		pstmt = connection.prepareStatement(SQL1);
+	    		re = pstmt.executeUpdate();
+	    		SQL1 ="update car_info set Init_Time="+"default"+" where ID="+i+";";
+	    		pstmt = connection.prepareStatement(SQL1);
+	    		re = pstmt.executeUpdate();
+	    		if(rs.next()) {
+	    		}
+	    		else {
+	    		}
+	    	}
+	    	catch(Exception e) {
+	    		System.out.println(e.getMessage());
+	    		
+	    	}	
 	    }
 	  
 	    public static void main(String[] args) {
@@ -134,5 +182,6 @@ public class Surprise_Db {
 			
 			
 		}   
+	   
 
 }
