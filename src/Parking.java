@@ -6,9 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.Time;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,9 +23,10 @@ public class Parking extends JFrame {
 	public JLabel[] parking = new JLabel[12];
 	//Index_info info[] = new Index_info[12];
 	//전역 변수
-	
-	public LocalTime entertime;
-	
+	public LocalDateTime entertime;
+	LocalDateTime []d2 = new LocalDateTime[12];
+	public JLabel charge2;
+	long d3;
 	String c_num ;
 	//
 	public Parking() {
@@ -45,17 +45,25 @@ public class Parking extends JFrame {
 		
 		enter = new JButton("입차");	
 		exit = new JButton("출차");
-		charge = new JButton("정산");
+		charge2 = new JLabel("정산");
 		center.setLayout(grid);
 		
+		
+		
+		int a;
 		for (int i = 0; i < 12; i++) {
 			if(db.check_parking(i+1)) {
+				entertime = db.get_Init_Time(i+1);
+				
 				System.out.println(i+1);
+				
 				//+ "시 " + entertime.getMinute() + "분" 
 				c_num =db.get_Car_Num(i+1);
 				parking[i] = new JLabel("<html><body><center>" 
-						+ c_num + "<br><br>" + db.get_Init_Time(i+1) 
-						+ "</center></body></html>");
+						+ c_num + "<br><br>"          
+						 +entertime.getHour()+"시"
+						 +entertime.getMinute()+"분"+
+						"</center></body></html>");
 				parking[i].setHorizontalAlignment(parking[i].CENTER);
 				parking[i].setBackground(Color.GREEN);
 				parking[i].setOpaque(true);
@@ -95,7 +103,7 @@ public class Parking extends JFrame {
 
 		west.add(enter);
 		west.add(exit);
-		west.add(charge);
+		west.add(charge2);
 
 		c.add(west, BorderLayout.WEST);
 		c.add(center, BorderLayout.CENTER);
@@ -113,12 +121,12 @@ public class Parking extends JFrame {
 			Container c = getContentPane();
 			c.setLayout(new GridLayout(2, 2));
 			en.addActionListener(new ActionListener() {
-
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					
-					entertime = LocalTime.now();
+					entertime = LocalDateTime.now();
+					System.out.println(entertime);
 					System.out.println(entertime); 
 					int select_index = Integer.parseInt(num.getText());
 					c_num = carnum.getText();
@@ -141,41 +149,75 @@ public class Parking extends JFrame {
 	}
 
 	public class Exit extends JFrame {
+
 		private JButton ex = new JButton("출차");
+
 		private JButton back = new JButton("돌아가기");
+
 		private JTextField num = new JTextField("");
-		public LocalTime exittime;
+		public LocalDateTime exittime;
+		String s;
+
 		public Exit() {
+
 			setTitle("출차");
+
 			Container c = getContentPane();
+
 			c.setLayout(new GridLayout(2, 2));
+
+
+
 			ex.addActionListener(new ActionListener() {
-				
+
 				@Override
+
 				public void actionPerformed(ActionEvent e) {
+
 					// TODO Auto-generated method stub
-					exittime = LocalTime.now();
+
+					exittime = LocalDateTime.now();
+					parking[Integer.parseInt(num.getText()) - 1].setText(num.getText() + "번");
+					d2[Integer.parseInt(num.getText()) - 1] = LocalDateTime.of(exittime.getYear(), exittime.getMonth(), exittime.getDayOfMonth(),
+							exittime.getHour(), exittime.getMinute(), exittime.getSecond());
+					setVisible(false);
+					
+					d3 = ChronoUnit.SECONDS.between(db.get_Init_Time(Integer.parseInt(num.getText())), d2[Integer.parseInt(num.getText()) - 1]);
+					s = Long.toString(d3);
+					charge2.setText(s + "초");
 					db.Out_car(Integer.parseInt(num.getText()));
-					
-					parking[Integer.parseInt(num.getText())-1].setText(num.getText() + "번");
-					
-					
-					setVisible(false);
 				}
+
 			});
+
 			back.addMouseListener(new MouseAdapter() {
+
 				public void mouseClicked(MouseEvent e) {
+
 					new Parking();
+
 					setVisible(false);
+
+					// end = false;
+
 				}
+
 			});
+
 			c.add(num);
+
 			c.add(ex);
+
 			c.add(back);
+
 			setSize(300, 300);
+
 			setVisible(true);
+
 		}
+
 	}
+
 
 	class mouselistener extends MouseAdapter{
 		public void mouseEntered(MouseEvent e) {

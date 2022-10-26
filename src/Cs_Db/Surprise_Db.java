@@ -5,8 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
-
 
 public class Surprise_Db {
 	 	private String url = "jdbc:mysql://localhost:3306/car_surprise?serverTimezone=UTC";
@@ -35,7 +36,7 @@ public class Surprise_Db {
 			}
 		}
 	    
-	    public void init_car(int area_id, String c_num, LocalTime time) {//데이터 베이스에 차량 등록 함수
+	    public void init_car(int area_id, String c_num,LocalDateTime time) {//데이터 베이스에 차량 등록 함수
 	    	try {
 	    		area_id +=1; 
 	    		System.out.println(time);
@@ -129,19 +130,15 @@ public class Surprise_Db {
 	    		return " ";
 	    	}	
 	    }
-	    public String get_Init_Time(int i) {//데이터 베이스에 등록된 차량의 입차 시간 리턴
-	    	String Init_Time= "";
+	    public LocalDateTime get_Init_Time(int i) {//데이터 베이스에 등록된 차량의 입차 시간 리턴
+	    	LocalDateTime Init_Time= LocalDateTime.now();
+	    	
 	    	try {
 	    		String SQL1 = "select Init_Time from car_info where id="+i+";";
 	    		rs= st.executeQuery(SQL1);
 	    		if(rs.next()) {
-	    			Init_Time=rs.getTime("Init_Time").toString();
-	    			String front_text = Init_Time.substring(0, 2);
-	    			String back_text = Init_Time.substring(2);
-	    			System.out.println(back_text);
-	    			int t = Integer.parseInt(front_text); 
-	    			t-=9;
-	    			Init_Time = t + back_text;
+	    			Init_Time=rs.getTimestamp("Init_Time").toLocalDateTime();
+	    			Init_Time =Init_Time.plusHours(-9);
 	    			System.out.println(Init_Time);
 		    		return Init_Time;
 	    		}
