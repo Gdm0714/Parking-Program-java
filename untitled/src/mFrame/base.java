@@ -14,10 +14,10 @@ public class base extends JFrame {
     private JButton jb = new JButton("회원가입");
     private JLabel pi;
     private ImageIcon parking = new ImageIcon("images/parkingicon.png");
-    DB_Connection db = new DB_Connection();
+   // DB_Connection db = new DB_Connection();
 
     public base() {
-        db.connect();
+       // db.connect();
         setTitle("메인 화면");
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -32,9 +32,9 @@ public class base extends JFrame {
         c.add(pi);
         log.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                if(db.login(id.getText(), pw.getText())){
-                    new Parking();
-                };
+               // if(db.login(id.getText(), pw.getText())){
+                 //   new Parking();
+               // };
             }
         });
         jb.addMouseListener(new MouseAdapter() {

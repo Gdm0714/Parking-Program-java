@@ -117,7 +117,7 @@ public class frame extends JFrame {
                     parking[select_index-1].setIcon(car);
                     parking[select_index-1].setVerticalTextPosition(SwingConstants.BOTTOM);
                     System.out.println(select_index - 1 + c_num);
-                    db.init_car(select_index - 1, c_num, entertime);
+                  //  db.init_car(select_index - 1, c_num, entertime,floor);
                     setVisible(false);//입력 후 창 닫기
                 }
             });
