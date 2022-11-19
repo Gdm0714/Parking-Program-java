@@ -19,7 +19,6 @@ public class base extends JFrame {
     public base() {
         db.connect();
         setTitle("메인 화면");
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Container c = getContentPane();
         c.setLayout(null);

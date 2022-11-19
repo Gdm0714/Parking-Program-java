@@ -36,7 +36,7 @@ public class Surprise_Db {
         }
     }
 
-    public void init_car(int area_id, String c_num,LocalDateTime time) {//데이터 베이스에 차량 등록 함수
+    public void init_car(int area_id, String c_num,LocalDateTime time,int floor) {//데이터 베이스에 차량 등록 함수
         try {
             area_id +=1;
             System.out.println(time);
@@ -50,6 +50,10 @@ public class Surprise_Db {
             re = pstmt.executeUpdate();
 
             SQL1 ="update car_info set Init_Time='"+time+"' where ID="+area_id+";";
+            pstmt = connection.prepareStatement(SQL1);
+            re = pstmt.executeUpdate();
+
+            SQL1 ="update car_info set Floor='"+floor+"' where ID="+area_id+";";
             pstmt = connection.prepareStatement(SQL1);
             re = pstmt.executeUpdate();
             if(re == 1) {System.out.println("clear!");
@@ -69,7 +73,7 @@ public class Surprise_Db {
         try {
 
             System.out.println("1");
-            for(int i=1;i<22;i++) {
+            for(int i=1;i<64;i++) {
                 String SQL1 = "insert into car_info (ID,Parking) values ("+i+","+0+");";
                 //System.out.println(area_id+c_num);
                 System.out.println(SQL1);
@@ -111,6 +115,24 @@ public class Surprise_Db {
             return false;
         }
 
+    }
+    public int get_car_floor(int i){
+        try {
+            String SQL1 = "select Floor from car_info where id="+i+";";
+            //System.out.println(area_id+c_num);
+            rs= st.executeQuery(SQL1);
+            if(rs.next()) {
+                int rt_value =rs.getInt("Floor");
+                return rt_value;
+            }
+            else return 0;
+
+
+        }
+        catch(Exception e) {
+            System.out.println("err");
+            return 0;
+        }
     }
     public String get_Car_Num(int i) {//데이터 베이스에서 차 이름 받아와서 리턴
 
