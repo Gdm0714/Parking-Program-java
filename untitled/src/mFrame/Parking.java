@@ -33,8 +33,11 @@ public class Parking extends JFrame {
     long d3;
     String c_num;
     private ImageIcon car = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\car.png");
+    JPanel logo = new JPanel();
+    JPanel header = new JPanel();
+    JPanel side = new JPanel();
     JPanel content = new JPanel();
-    JPanel footer = new JPanel();
+
 
     public Parking() {
         db.connect();
@@ -52,12 +55,18 @@ public class Parking extends JFrame {
           분할된 화면은 내용물 크기에 따라 x축이 자동으로 설정되고 높이는 고정
         */
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
 
+        gbc.weighty = 1.0;
 
         content.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
-        footer.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
-        content.setSize(1250, 600);
+        side.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
+
+
+        logo.setBorder(new TitledBorder(new LineBorder(Color.BLUE, 5)));
+
+        header.setBorder(new TitledBorder(new LineBorder(Color.ORANGE, 5)));
         JPanel page_f[] = new JPanel[3];
         for (int i = 0; i < 3; i++) {
             page_f[i] = new JPanel();
@@ -116,10 +125,9 @@ public class Parking extends JFrame {
 
                 //+ "시 " + entertime.getMinute() + "분"
                 c_num = db.get_Car_Num(i + a + 1);
-                parking[i+a] = new JLabel();
-                parking[i+a].setIcon(car);
+                parking[i + a] = new JLabel();
+                parking[i + a].setIcon(car);
                 parking[i + a].setPreferredSize(new Dimension(150, 170));
-
                 page_f[stack].add(parking[i + a]);
                 parking[i + a].setBackground(Color.pink);
                 parking[i + a].setFont(new Font("Gothic", Font.PLAIN, 20));
@@ -139,7 +147,51 @@ public class Parking extends JFrame {
 
             }
         }
-        for (int i = 0; i < 21; i++) {
+        for (int i = 0; i < 3; i++) {
+            page_f[i].setLayout(new GridLayout(3, 7, 0, 50));
+            page_f[i].setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
+            content.add(page_f[i]);
+            page_f[0].setVisible(true);
+            page_f[1].setVisible(false);
+            page_f[2].setVisible(false);
+        }
+
+        side.add(enter);
+        side.add(exit);
+        side.add(charge2);
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        c.add(logo, gbc);
+
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth = 3;
+        gbc.gridheight = 1;
+        c.add(header, gbc);
+        //c.add(field_c);
+        gbc.weighty = 0.2;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 8;
+        c.add(side, gbc);
+
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.gridheight = 8;
+        gbc.gridwidth = 3;
+        c.add(content, gbc);
+
+
+        setSize(1332, 722);
+        setVisible(true);
+
+
+        for (int i = 0; i < 62; i++) {
             parking[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
@@ -152,46 +204,17 @@ public class Parking extends JFrame {
                         label.setBackground(Color.pink);
                     }
                 }
+
                 @Override
                 public void mouseExited(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
-                    if(label.getText().length()>4) {
+                    if (label.getText().length() > 4) {
                         label.setIcon(car);
                         label.setText("");
                     }
                 }
             });
         }
-        for (int i = 0; i < 3; i++) {
-            page_f[i].setLayout(new GridLayout(3, 7, 0, 50));
-            page_f[i].setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
-            content.add(page_f[i]);
-            page_f[0].setVisible(true);
-            page_f[1].setVisible(false);
-            page_f[2].setVisible(false);
-        }
-
-        footer.add(enter);
-        footer.add(exit);
-        footer.add(charge2);
-        c.add(field_c);
-        gbc.weighty = 0.3;
-
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridheight = 3;
-        c.add(content, gbc);
-
-        gbc.weighty = 0.1;
-        gbc.gridx = 0;
-        gbc.gridy = 3;
-        gbc.gridheight = 1;
-
-        c.add(footer, gbc);
-
-
-        setSize(1250, 900);
-        setVisible(true);
 
 
         enter.addActionListener(new ActionListener() {
@@ -213,36 +236,38 @@ public class Parking extends JFrame {
 
     }
 
-    class Enter extends JDialog {
+    public class Enter extends JFrame {
         private JButton en = new JButton("입차");
         private JTextField carnum = new JTextField("car_num");
         private JTextField num = new JTextField("index_num");
-        private JTextField floor = new JTextField("set_Floor");
+        private JTextField floor = new JTextField("floor");
 
         public Enter() {
             setTitle("입차");
-
+            Container c = getContentPane();
+            c.setLayout(new GridLayout(2, 2));
             carnum.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    carnum.setText("");
+                    if (carnum.getText().equals("car_num"))
+                        carnum.setText("");
                 }
             });
             num.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    num.setText("");
+                    if (num.getText().equals("index_num"))
+                        num.setText("");
                 }
             });
 
             floor.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    floor.setText("");
+                    if (floor.getText().equals("floor"))
+                        floor.setText("");
                 }
             });
-            Container c = getContentPane();
-            c.setLayout(new GridLayout(2, 2));
             en.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -252,7 +277,6 @@ public class Parking extends JFrame {
                     int select_index = Integer.parseInt(num.getText());
                     c_num = carnum.getText();
                     int fl = Integer.parseInt(floor.getText());
-                    //
                     if (fl == 2) {
                         select_index += 20;
                     } else if (fl == 3) {
@@ -277,13 +301,13 @@ public class Parking extends JFrame {
         }
     }
 
-    public class Exit extends JDialog {
+    public class Exit extends JFrame {
 
         private JButton ex = new JButton("출차");
 
         private JButton back = new JButton("돌아가기");
 
-        private JTextField num = new JTextField("");
+        private JTextField num = new JTextField("index_num");
         private JTextField select_floor = new JTextField("floor");
         public LocalDateTime exittime;
         String s;
@@ -295,20 +319,22 @@ public class Parking extends JFrame {
             Container c = getContentPane();
 
             c.setLayout(new GridLayout(2, 2));
-
             num.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    num.setText("");
+                    if (num.getText().equals("index_num"))
+                        num.setText("");
                 }
             });
 
             select_floor.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    select_floor.setText("");
+                    if (select_floor.getText().equals("floor"))
+                        select_floor.setText("");
                 }
             });
+
             ex.addActionListener(new ActionListener() {
 
                 @Override
