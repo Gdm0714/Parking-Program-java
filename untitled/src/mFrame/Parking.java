@@ -32,9 +32,14 @@ public class Parking extends JFrame {
 
     long d3;
     String c_num;
-    private ImageIcon car = new ImageIcon("images/car.png");
+    private ImageIcon car = new ImageIcon("C:\\Users\\user\\IdeaProjects\\untitled\\Parking-Program-java\\untitled\\images\\car.png");
+    JPanel logo = new JPanel();
+    JPanel header = new JPanel();
+    JPanel side = new JPanel();
     JPanel content = new JPanel();
-    JPanel footer = new JPanel();
+
+
+
     public Parking() {
         db.connect();
         //db.default_create();// 1번만 쓰고 지워요 테이블 디폴트값 설정 용도
@@ -51,12 +56,18 @@ public class Parking extends JFrame {
           분할된 화면은 내용물 크기에 따라 x축이 자동으로 설정되고 높이는 고정
         */
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill=GridBagConstraints.VERTICAL;
+        gbc.fill=GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
 
+        gbc.weighty = 1.0;
 
         content.setBorder(new TitledBorder(new LineBorder(Color.red,5)));
-        footer.setBorder(new TitledBorder(new LineBorder(Color.red,5)));
-        content.setSize(1250,600);
+        side.setBorder(new TitledBorder(new LineBorder(Color.red,5)));
+
+
+        logo.setBorder(new TitledBorder(new LineBorder(Color.BLUE,5)));
+
+        header.setBorder(new TitledBorder(new LineBorder(Color.ORANGE,5)));
         JPanel page_f[] = new JPanel[3];
         for(int i =0; i<3; i++){
             page_f [i] = new JPanel();
@@ -121,6 +132,8 @@ public class Parking extends JFrame {
                         + entertime.getHour() + "시"
                         + entertime.getMinute() + "분" +
                         "</center></body></html>" + "eqweqweqweqweqweqweqw");
+                parking[i+a] = new JLabel();
+                parking[i+a].setIcon(car);
                 parking[i + a].setPreferredSize(new Dimension(150, 170));
                 page_f[stack].add(parking[i + a]);
                 parking[i + a].setBackground(Color.pink);
@@ -150,26 +163,38 @@ public class Parking extends JFrame {
                 page_f[2].setVisible(false);
             }
 
-            footer.add(enter);
-            footer.add(exit);
-            footer.add(charge2);
-            c.add(field_c);
-            gbc.weighty=0.3;
+            side.add(enter);
+            side.add(exit);
+            side.add(charge2);
 
-            gbc.gridx =0;
-            gbc.gridy =0;
-            gbc.gridheight=3;
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.gridwidth =1;
+            gbc.gridheight =1;
+            c.add(logo,gbc);
+
+
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.gridwidth =3;
+        gbc.gridheight =1;
+        c.add(header,gbc);
+        //c.add(field_c);
+        gbc.weighty = 0.2;
+        gbc.gridx =0;
+        gbc.gridy =1;
+        gbc.gridwidth =1;
+        gbc.gridheight=8;
+        c.add(side,gbc);
+
+        gbc.gridx =1;
+            gbc.gridy =1;
+            gbc.gridheight=8;
+            gbc.gridwidth =3;
             c.add(content,gbc);
 
-            gbc.weighty=0.1;
-            gbc.gridx =0;
-            gbc.gridy =3;
-            gbc.gridheight=1;
 
-            c.add(footer,gbc);
-
-
-            setSize(1250, 900);
+            setSize(1332, 722);
             setVisible(true);
 
 
@@ -223,7 +248,7 @@ public class Parking extends JFrame {
                             + c_num + "<br><br>" + entertime.getHour()
                             + "시 " + entertime.getMinute() + "분" + "</center></body></html>");
                     parking[select_index-1].setBackground(Color.pink);
-                   // parking[select_index-1].setIcon(car);
+                    parking[select_index-1].setIcon(car);
                     parking[select_index-1].setVerticalTextPosition(SwingConstants.BOTTOM);
                     System.out.println(select_index - 1 + c_num);
                     db.init_car(select_index - 1, c_num, entertime,fl);

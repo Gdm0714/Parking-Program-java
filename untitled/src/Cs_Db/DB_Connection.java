@@ -9,7 +9,7 @@ public class DB_Connection {
     private Statement st;
     private String url = "jdbc:mysql://localhost:3306/login?serverTimezone=UTC";
     private String user = "root";
-    private String password = "0714";
+    private String password = "woals8115";
     private String driverName = "com.mysql.cj.jdbc.Driver";
 
     /** DB 연결 */
