@@ -466,11 +466,11 @@ public class Parking extends JFrame {
 
                     d3 = ChronoUnit.SECONDS.between(db.get_Init_Time(Integer.parseInt(num.getText())), d2[Integer.parseInt(num.getText()) - 1]);
                     s = Long.toString(d3);
-                    if (d3 > 60) {
+                    /*if (d3 > 60) {
                         charge2.setText(Long.toString(d3 / 60) + "분" + Long.toString(d3 % 60) + "초");
                     } else {
                         charge2.setText(s + "초");
-                    }
+                    }*/
                     int fl = Integer.parseInt(select_floor.getText());
                     int value = Integer.parseInt(num.getText());
                     if (fl == 2) {
@@ -478,6 +478,17 @@ public class Parking extends JFrame {
                     } else if (fl == 3) {
                         value += 41;
                     }
+                    if (d3 > 1800) {
+                        d3 -= 1800;
+                        d3 = d3 / 600 * 500 + 1500;
+                    }
+                    else if(d3 <= 1800 || d3 > 0) {
+                        d3 = 1500;
+                    }
+                    s = Long.toString(d3);
+                    charge2.setFont(new Font("Gothic", Font.PLAIN, 15));
+                    charge2.setText(db.get_Car_Num(value) + "차량의 요금은 " + s + "원 입니다");
+
                     db.Out_car(value);
                     parking[value - 1].setIcon(null);
                     parking[value - 1].setForeground(Color.WHITE);
