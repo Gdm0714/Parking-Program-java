@@ -84,6 +84,14 @@ public class Parking extends JFrame {
 
     private Container c;
 
+    private JLabel space;
+
+    int firstNum = 0;
+
+    int secondNum = 0;
+
+    int thirdNum = 0;
+
     public Parking() {
         db.connect();
         //db.default_create();// 1번만 쓰고 지워요 테이블 디폴트값 설정 용도
@@ -107,13 +115,18 @@ public class Parking extends JFrame {
         side.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
         logo.setBorder(new TitledBorder(new LineBorder(Color.BLUE, 5)));
         header.setBorder(new TitledBorder(new LineBorder(Color.ORANGE, 5)));
-        side.setLayout(new GridLayout(5, 1));
+        side.setLayout(new GridLayout(6, 1));
 
+
+        space = new JLabel("<html><body><center>" + "1층에" + firstNum + "대 주차되어있습니다.<br>2층에" + secondNum +
+                "대 주차되어있습니다.<br>3층에" + thirdNum + "대 주차되어있습니다.</center></body></html>");
+        space.setFont(new Font("Gothic", Font.PLAIN, 20));
+        space.setForeground(Color.BLUE);
 
         side.add(sp1);
         sp1.setBackground(Color.GRAY);
         side.add(sp2);
-        sp2.setBackground(Color.GRAY);
+        sp2.setBackground(Color.YELLOW);
         side.add(sp3);
         sp3.setBackground(Color.GRAY);
         side.add(sp4);
@@ -218,6 +231,9 @@ public class Parking extends JFrame {
         sp1.add(enter);
         sp1.add(exit);
         sp2.add(charge2);
+        sp3.add(field_c);
+        sp4.add(space);
+
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -279,7 +295,7 @@ public class Parking extends JFrame {
         side.setBackground(Color.GRAY);
         header.setBackground(Color.GRAY);
 
-        sp3.add(field_c);
+
         enter.addActionListener(new ActionListener() {
 
             @Override
@@ -345,8 +361,12 @@ public class Parking extends JFrame {
                     int fl = Integer.parseInt(floor.getText());
                     if (fl == 2) {
                         select_index += 20;
+                        secondNum++;
                     } else if (fl == 3) {
                         select_index += 41;
+                        thirdNum++;
+                    } else if (fl == 1) {
+                        firstNum++;
                     }
                     System.out.printf(select_index + "");
                     parking[select_index - 1].setText("");
@@ -354,6 +374,7 @@ public class Parking extends JFrame {
                     parking[select_index - 1].setVerticalTextPosition(SwingConstants.BOTTOM);
                     System.out.println(select_index - 1 + c_num);
                     db.init_car(select_index - 1, c_num, entertime, fl);
+
                     setVisible(false);//입력 후 창 닫기
                 }
             });
@@ -376,7 +397,7 @@ public class Parking extends JFrame {
                             + c_num + "<br><br>" + entertime.getHour()
                             + "시 " + entertime.getMinute() + "분" + "</center></body></html>"*/
                     /*enx.setText("<html><body><center>"Integer.toString(fl) + "층 " + Integer.toString(select_index) + "번 자리에 " + entertime.getHour() + "시 " + entertime.getMinute() + "분 " + c_num + "차량 입차되었습니다");*/
-                    enx.setText("<html><body><center>" +  + entertime.getHour() + "시" + entertime.getMinute() + "분<br>"
+                    enx.setText("<html><body><center>" + +entertime.getHour() + "시" + entertime.getMinute() + "분<br>"
                             + Integer.toString(fl) + "층" + Integer.toString(select_index) + "번 자리에 " + c_num + "차량 입차되었습니다</center></body></html>");
                     st = new showThread(enx, header, 0, e.getY());
                     st.start();
@@ -462,6 +483,7 @@ public class Parking extends JFrame {
                     }
                     db.Out_car(value);
                     parking[value - 1].setIcon(null);
+                    parking[value - 1].setForeground(Color.WHITE);
                     parking[value - 1].setBackground(Color.BLACK);
                     parking[value - 1].setBorder(new LineBorder(Color.WHITE, 5));
                     parking[value - 1].setText(num.getText());
@@ -562,21 +584,19 @@ class showThread extends Thread {
 
     }
 
-    public void run(){
+    public void run() {
         label.setLocation(x, y);
         p.add(label);
-        while(true){
-            try{
-                if(x<=1300){
-                    x+=5;
+        while (true) {
+            try {
+                if (x <= 1300) {
+                    x += 5;
                     label.setLocation(x, y);
                     sleep(50);
-                }
-                else if(x>1300){
+                } else if (x > 1300) {
                     p.remove(label);
                 }
-            }
-            catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 return;
             }
         }
