@@ -64,7 +64,7 @@ public class DB_Connection {
         return false;
     }
 
-    public boolean login(String id, String pw) {
+    /*public boolean login(String id, String pw) {
         boolean id_c = false;
         boolean pw_c = false;
         try {
@@ -84,6 +84,27 @@ public class DB_Connection {
                 }
             }
             if(id_c == true && pw_c == true) {
+                System.out.println("로그인 성공");
+                return true;
+            }
+        }
+        catch(Exception e) {
+            System.out.println("[데이터베이스 검색 오류] : " + e.getMessage());
+        }System.out.println("로그인 실패");
+        return false;
+    }*/
+
+    public boolean login(String pw) {
+        boolean pw_c = false;
+        try {
+            String SQL = "SELECT * FROM log_info WHERE user_pw = '" + pw + "';".toString();
+            rs = st.executeQuery(SQL);
+            if(rs.next()) {
+                if(rs.getString("user_pw").equals(pw)) {
+                    pw_c = true;
+                }
+            }
+            if(pw_c == true) {
                 System.out.println("로그인 성공");
                 return true;
             }
