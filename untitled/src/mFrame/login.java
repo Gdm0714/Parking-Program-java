@@ -29,7 +29,7 @@ public class login extends JFrame {
         });
         jb.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                new sign_Dialog();
+               // new sign_Dialog();
             }
         });
         setSize(500, 200);

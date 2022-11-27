@@ -6,47 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-class MyLabel extends JLabel{
-    private int barSize = 0;
-    private int maxBarSize;
-    public MyLabel(int maxBarSize){
-        this.barSize = maxBarSize;
-    }
 
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        g.setColor(Color.MAGENTA);
-        int width = (int) (((double)(this.getWidth()))/maxBarSize*barSize);
-        if(width == 0) return ;
-        g.fillRect(0,0,width,this.getHeight());
-    }
 
-    synchronized public void fill(){
-        if(barSize == maxBarSize){
-            try{
-                new Parking();
-            }
-            catch (Exception e){return;}
-        }
-        barSize++;
-        repaint();
-        notify();
-    }
-}
-class loading extends Thread{
-    private MyLabel bar;
-    public loading(MyLabel bar){
-        this.bar = bar;
-    }
-    public void run(){
-        while(true){
-            try{
-                sleep(1000);
-                bar.fill();
-            }catch (Exception e){return;}
-        }
-    }
-}
 public class base extends JFrame {
     private JTextField id = new JTextField("id 입력");
     private JTextField pw = new JTextField("pw 입력");
@@ -54,38 +15,48 @@ public class base extends JFrame {
     private JButton jb = new JButton("회원가입");
     private JLabel pi;
     private ImageIcon parking = new ImageIcon("images/parkingicon.png");
+    JComboBox <String> lc_box = new JComboBox<String>();
+    String location[] = {"장영실관","하현관","늘빛관"};
+    String db_name[]={"car_info","car_info_b","car_info_c"};
     DB_Connection db = new DB_Connection();
-    private  MyLabel bar = new MyLabel(100);
+    public String get_table_name(){
+        return "";
+    }
     public base() {
-       // db.connect();
+        db.connect();
         setTitle("메인 화면");
-        loading l = new loading(bar);
-        l.start();
+       for(int i =0;  i<3;i++){
+           lc_box.addItem(location[i]);
+       }
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Container c = getContentPane();
         c.setLayout(null);
         id.setBounds(220, 300, 160, 30);
         pw.setBounds(220, 330, 160, 30);
-        bar.setVisible(true);
-        bar.setBackground(Color.yellow);
-        bar.setSize(300,20);
-        c.add(bar);
+
+
         c.add(id);
         c.add(pw);
+        lc_box.setBounds(220, 400, 160, 30);
+        c.add(lc_box);
+
         pi = new JLabel(parking);
         pi.setBounds(200, 100, 200, 200);
         c.add(pi);
         log.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-               // if(db.login(id.getText(), pw.getText())){
-                   Parking p =new Parking();
+               if(db.login(lc_box.getSelectedItem().toString(), pw.getText())==true){
+                   System.out.println(lc_box.getSelectedIndex());
+                   System.out.println("eqweqweqweqweqweqw");
+                   new Parking(lc_box.getSelectedItem().toString(),db_name[lc_box.getSelectedIndex()]);
 
-              // };
+               };
+
             }
         });
         jb.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                new sign_Dialog();
+                //new sign_Dialog();
             }
         });
         log.setBounds(200, 360, 100, 50);

@@ -16,13 +16,14 @@ import javax.swing.border.TitledBorder;
 import Cs_Db.Surprise_Db;
 
 public class Parking extends JFrame {
+
     private JButton enter, exit;
     public JLabel[] parking = new JLabel[63];
     public JLabel charge2;
     BevelBorder border;
     JComboBox <String> field_c = new JComboBox<String>();
     String text_floor[] = { "1층","2층","3층"};
-    Surprise_Db db = new Surprise_Db();
+
     private JPanel center, west;
 
     //Index_info info[] = new Index_info[12];
@@ -37,13 +38,14 @@ public class Parking extends JFrame {
     JPanel header = new JPanel();
     JPanel side = new JPanel();
     JPanel content = new JPanel();
+    private  String table_name;
+    Surprise_Db db;
+    public int cnt_graph[] = new int[3];
 
-
-
-    public Parking() {
+    public Parking(String table_name,String lc_text) {
+        db= new Surprise_Db(lc_text);
         db.connect();
         //db.default_create();// 1번만 쓰고 지워요 테이블 디폴트값 설정 용도
-
 
         setTitle("Test");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -103,7 +105,7 @@ public class Parking extends JFrame {
         exit.setBackground(Color.LIGHT_GRAY);
         charge2.setBounds(1000, 700, 100, 100);
         charge2.setBackground(Color.WHITE);
-//
+
         int a=0; // 주차공간 id에 접근하기위해서 임의로 값 수정 하기위해 사용한 변수
         int stack = 0;// 주차장의 층 확인용 변수
 
@@ -112,12 +114,12 @@ public class Parking extends JFrame {
             if (i > 20 && stack == 0) {
                 stack = 1;
                 i -= 21;
-                a = 20;
+                a = 21;
             }
             if (i > 20 && stack == 1) {
                 stack = 2;
                 i -= 21;
-                a = 41;
+                a = 42;
             }
             System.out.printf(""+stack);
             if (db.check_parking(i + a + 1)&& stack+1== db.get_car_floor(i+a+1)) {
@@ -132,6 +134,7 @@ public class Parking extends JFrame {
                         + entertime.getHour() + "시"
                         + entertime.getMinute() + "분" +
                         "</center></body></html>" + "eqweqweqweqweqweqweqw");
+                parking[i + a].setName(i+a+"");
                 parking[i+a] = new JLabel();
                 parking[i+a].setIcon(car);
                 parking[i + a].setPreferredSize(new Dimension(150, 170));
@@ -143,7 +146,7 @@ public class Parking extends JFrame {
                 parking[i + a].setOpaque(true);
             } else {
                 parking[i + a] = new JLabel(Integer.toString(i + 1));
-
+                parking[i + a].setName(i+a+1+"");
                 parking[i + a].setPreferredSize(new Dimension(150, 170));
                 page_f[stack].add(parking[i + a]);
                 parking[i + a].setBackground(Color.GREEN);
@@ -154,24 +157,25 @@ public class Parking extends JFrame {
 
             }
         }
-            for(int i =0;i<3;i++){
-                page_f[i].setLayout(new GridLayout(3,7,0,50));
-                page_f[i].setBorder(new TitledBorder(new LineBorder(Color.red,5)));
-                content.add(page_f[i]);
-                page_f[0].setVisible(true);
-                page_f[1].setVisible(false);
-                page_f[2].setVisible(false);
-            }
+        //parking[0].setBorder(new TitledBorder(new LineBorder(Color.red,5)));
+        for(int i =0;i<3;i++){
+            page_f[i].setLayout(new GridLayout(3,7,0,50));
+            page_f[i].setBorder(new TitledBorder(new LineBorder(Color.red,5)));
+            content.add(page_f[i]);
+            page_f[0].setVisible(true);
+            page_f[1].setVisible(false);
+            page_f[2].setVisible(false);
+        }
 
-            side.add(enter);
-            side.add(exit);
-            side.add(charge2);
+        side.add(enter);
+        side.add(exit);
+        side.add(charge2);
 
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.gridwidth =1;
-            gbc.gridheight =1;
-            c.add(logo,gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth =1;
+        gbc.gridheight =1;
+        c.add(logo,gbc);
 
 
         gbc.gridx = 1;
@@ -179,7 +183,7 @@ public class Parking extends JFrame {
         gbc.gridwidth =3;
         gbc.gridheight =1;
         c.add(header,gbc);
-        //c.add(field_c);
+        header.add(field_c);
         gbc.weighty = 0.2;
         gbc.gridx =0;
         gbc.gridy =1;
@@ -188,17 +192,36 @@ public class Parking extends JFrame {
         c.add(side,gbc);
 
         gbc.gridx =1;
-            gbc.gridy =1;
-            gbc.gridheight=8;
-            gbc.gridwidth =3;
-            c.add(content,gbc);
+        gbc.gridy =1;
+        gbc.gridheight=8;
+        gbc.gridwidth =3;
+        c.add(content,gbc);
 
 
-            setSize(1332, 722);
-            setVisible(true);
+        setSize(1332, 722+50);
+        setVisible(true);
 
 
+        for (int i = 0; i < 62; i++) {
+            parking[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    JLabel label = (JLabel) e.getSource();
 
+                        System.out.println(label.getName());
+
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    JLabel label = (JLabel) e.getSource();
+                    if (label.getText().length() > 4) {
+                        label.setIcon(car);
+                        label.setText("");
+                    }
+                }
+            });
+        }
         enter.addActionListener(new ActionListener() {
 
             @Override
@@ -238,20 +261,23 @@ public class Parking extends JFrame {
                     c_num = carnum.getText();
                     int fl = Integer.parseInt(floor.getText());
                     //
+
                     if(fl == 2){
-                        select_index +=20;
+                        select_index +=21;
                     } else if (fl ==3 ) {
-                        select_index +=41;
+                        select_index +=42;
                     }
-                    System.out.printf(select_index+"");
-                    parking[select_index - 1].setText("<html><body><center>"
+                    System.out.printf(select_index+"qqq");
+                    select_index -= 1;
+
+                    parking[select_index].setText("<html><body><center>"
                             + c_num + "<br><br>" + entertime.getHour()
                             + "시 " + entertime.getMinute() + "분" + "</center></body></html>");
-                    parking[select_index-1].setBackground(Color.pink);
-                    parking[select_index-1].setIcon(car);
-                    parking[select_index-1].setVerticalTextPosition(SwingConstants.BOTTOM);
-                    System.out.println(select_index - 1 + c_num);
-                    db.init_car(select_index - 1, c_num, entertime,fl);
+                    parking[select_index].setBackground(Color.pink);
+                    parking[select_index].setIcon(car);
+                    parking[select_index].setVerticalTextPosition(SwingConstants.BOTTOM);
+                    System.out.println(select_index + c_num);
+                    db.init_car(select_index, c_num, entertime,fl);
                     setVisible(false);//입력 후 창 닫기
                 }
             });
@@ -309,7 +335,9 @@ public class Parking extends JFrame {
                     } else if (fl ==3 ) {
                         value +=41;
                     }
+                    //System.out.println(db.get_Car_Num(value));
                     db.Out_car(value);
+
                     parking[value-1].setIcon(null);
                     parking[value - 1].setBackground(Color.GREEN);
                     parking[value - 1].setText(num.getText());
@@ -362,6 +390,6 @@ public class Parking extends JFrame {
     }
 
     public static void main(String[] args) {
-        new Parking();
+        // new Parking("e");
     }
 }
