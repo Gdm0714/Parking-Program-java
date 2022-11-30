@@ -219,6 +219,7 @@ public class Parking extends JFrame {
                 //+ "시 " + entertime.getMinute() + "분"
                 c_num = db.get_Car_Num(i + a + 1);
                 parking[i + a] = new JLabel();
+                parking[i + a].setName(i+a+1+"");
                 parking[i + a].setIcon(car);
                 parking[i + a].setPreferredSize(new Dimension(150, 170));
                 page_f[stack].add(parking[i + a]);
@@ -303,15 +304,16 @@ public class Parking extends JFrame {
                 @Override
                 public void mouseEntered(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
-                    if (label.getText() == "") {
-                        for (int j = 0; j < 62; j++) {
+                        int ed = Integer.parseInt(label.getName());
+                        c_num = db.get_Car_Num(ed);
+                        entertime = db.get_Init_Time(ed);
                             label.setIcon(null);
                             label.setText("<html><body><center>"
                                     + c_num + "<br><br>" + entertime.getHour()
                                     + "시 " + entertime.getMinute() + "분" + "</center></body></html>");
                             label.setBackground(Color.pink);
-                        }
-                    }
+
+
                 }
 
                 @Override
@@ -405,6 +407,7 @@ public class Parking extends JFrame {
                     parking[select_index - 1].setText("");
                     parking[select_index - 1].setIcon(car);
                     parking[select_index - 1].setVerticalTextPosition(SwingConstants.BOTTOM);
+
                     System.out.println(select_index - 1 + c_num);
                     db.init_car(select_index - 1, c_num, entertime, fl);
 
