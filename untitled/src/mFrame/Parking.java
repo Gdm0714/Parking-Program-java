@@ -78,15 +78,34 @@ public class Parking extends JFrame {
 
     JPanel sp3 = new JPanel();
 
+    Color pinky = new Color(236, 64, 122);
+
+    Color shinysky = new Color(0, 188, 212);
+
+    Color teal = new Color(220, 231, 117);
+
+    Color purplebubble = new Color(103, 58, 183);
+
+    Color[] colors = { pinky, shinysky, teal, purplebubble };
+
+    public int cnt_whole = 63;
+
+    public int cnt_graph[] = new int[4];
     JPanel sp4 = new JPanel();
 
     JPanel sp5 = new JPanel();
 
+    int[] angle = new int[4];
+
+    int[] n = new int[4];
     private JLabel logoLabel = new JLabel();
 
     private Container c;
 
     private JLabel space;
+
+    String[] floorsGraph = { "1st", "2nd", "3rd", "rest" };
+
 
     int firstNum = 0;
 
@@ -139,10 +158,12 @@ public class Parking extends JFrame {
 
         JPanel page_f[] = new JPanel[3];
         for (int i = 0; i < 3; i++) {
+            cnt_graph[i] = 0;
             page_f[i] = new JPanel();
             page_f[i].setBackground(Color.BLACK);
             field_c.addItem(text_floor[i]);
         }
+        cnt_graph[3] = 63;
         field_c.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -206,6 +227,16 @@ public class Parking extends JFrame {
                 parking[i + a].setHorizontalAlignment(parking[i + a].CENTER);
                 parking[i + a].setBorder(border);
                 parking[i + a].setOpaque(true);
+                if (stack == 0) {
+                    cnt_graph[3]--;
+                    cnt_graph[0]++;
+                } else if (stack == 1) {
+                    cnt_graph[3]--;
+                    cnt_graph[1]++;
+                } else if (stack == 2) {
+                    cnt_graph[3]--;
+                    cnt_graph[2]++;
+                }
 
             } else {
                 parking[i + a] = new JLabel(Integer.toString(i + 1));
@@ -261,6 +292,7 @@ public class Parking extends JFrame {
         gbc.gridheight = 8;
         gbc.gridwidth = 3;
         c.add(content, gbc);
+        sp5.add(new leftPanel2());
 
         setSize(1432, 922);
         setVisible(true);
@@ -543,6 +575,39 @@ public class Parking extends JFrame {
 
         }
 
+    }
+    class leftPanel2 extends JPanel {
+        public void paintComponent(Graphics g) {
+            int sum = 0;
+            super.paintComponent(g);
+
+            int startAngle = 0;
+            for (int i = 0; i < floorsGraph.length; i++) {
+                g.setColor(colors[i]);
+                g.drawString(floorsGraph[i] + " " + Math.round(angle[i] * 100 / 360) + "%", 100 + i * 100, 20);
+            }
+            for (int i = 0; i < floorsGraph.length; i++) {
+
+                sum += cnt_graph[i];
+            }
+            for (int i = 0; i < floorsGraph.length; i++) {
+                angle[i] = (int) Math.round((double) cnt_graph[i] / (double) sum * 360);
+
+                /*
+                 * repaint();s g.setColor(colors[i]);
+                 * g.fillArc(150,50,200,200,startAngle,angle[i]); startAngle += angle[i];
+                 */
+            }
+            g.setColor(pinky);
+            g.fillArc(100, 360, 200, 200, 0, angle[0]);
+            g.setColor(shinysky);
+            g.fillArc(100, 360, 200, 200, angle[0], angle[1]);
+            g.setColor(purplebubble);
+            g.fillArc(100, 360, 200, 200, angle[0] + angle[1], angle[2]);
+            g.setColor(Color.GRAY);
+            g.fillArc(100, 360, 200, 200, angle[0] + angle[1] + angle[2], angle[3]);
+            setSize(200, 200);
+        }
     }
 
     public static void main(String[] args) {
