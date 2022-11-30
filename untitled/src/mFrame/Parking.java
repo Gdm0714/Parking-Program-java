@@ -56,7 +56,7 @@ public class Parking extends JFrame {
 
     Color[] colors = { pinky, shinysky, teal, purplebubble };
     String[] floorsgraph = { "1st", "2nd", "3rd", "rest" };
-
+//
     Chart_Circle side = new Chart_Circle();
     public int cnt_whole = 63;
     public int cnt_graph[] = new int[4];

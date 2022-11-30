@@ -48,7 +48,7 @@ public class base extends JFrame {
 
 
 
-
+//
 
         pi = new JLabel(parking);
         log.addMouseListener(new MouseAdapter() {
