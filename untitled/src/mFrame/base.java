@@ -28,6 +28,9 @@ public class base extends JFrame {
     private JLabel pi;
     private ImageIcon parking = new ImageIcon("images/parkingicon.png");
     private JLabel Password_t = new JLabel("Password");
+    private JLabel hello_msg;
+
+
     //
 
     JComboBox <String> lc_box = new JComboBox<String>();
@@ -35,17 +38,19 @@ public class base extends JFrame {
     String db_name[]={"car_info","car_info_b","car_info_c"};
     DB_Connection db = new DB_Connection();
     CircleAnimation circle;
+    Announce announce;
     public String get_table_name(){
         return "";
     }
     boolean check_info = false;
     int arc; // 각도
-
+    int opaque_text = 250;
     JButton enter_bt = new JButton("접속");
 
 
     //스타일 지정 변수
     Font title_font = new Font("배민도현체",Font.BOLD,22);
+
     public base() {
 
         db.connect();
@@ -91,9 +96,9 @@ public class base extends JFrame {
         gbc.gridwidth =1;
         gbc.gridheight =2;
         c.add(header,gbc);
-        header.setBackground(Color.WHITE);
-
+        header.setBackground(new Color(255,255,255,0));
         header.setLayout(null);
+
         JLabel title = new JLabel("  Welcome The Parking System.");
         title.setBounds(130,c.getHeight()/10,600,100);
 
@@ -101,14 +106,15 @@ public class base extends JFrame {
 
         header.add(title);
 
+
         gbc.weighty = 0.5;
         gbc.gridx = 0;
         gbc.gridy = 2;
         gbc.gridwidth =1;
         gbc.gridheight =3;
         c.add(content,gbc);
-        content.setBackground(Color.WHITE);
-    //content.setBorder(new LineBorder(Color.red,5));
+        content.setBackground(Color.white);
+
         content.setLayout(null);
         JLabel content_text = new JLabel("카놀라유");
         content_text.setBounds(250,c.getHeight()/8,600,100);
@@ -136,7 +142,7 @@ public class base extends JFrame {
         gbc.gridwidth =1;
         gbc.gridheight =2;
         c.add(footer,gbc);
-        footer.setBackground(Color.WHITE);
+        footer.setBackground(Color.white);
 
         footer.setLayout(null);
         log.setBounds(170,c.getHeight()/6,200,50);
@@ -159,6 +165,7 @@ public class base extends JFrame {
         setSize(600, 600);
         setVisible(true);
     }
+
     class Line extends JPanel{
 
         public void paintComponent(Graphics g){
@@ -168,9 +175,9 @@ public class base extends JFrame {
 
         }
     }
-    public class CircleAnimation extends JPanel {
+    class CircleAnimation extends JPanel {
         public CircleAnimation(){
-            JLabel hello_msg =new JLabel("Hello SuperVisor");
+           hello_msg =new JLabel("Hello SuperVisor");
            // hello_msg.setBorder(new TitledBorder(new LineBorder(Color.BLUE,5)));
             hello_msg.setFont(title_font);
             check_info = db.login(lc_box.getSelectedItem().toString(), pw.getText());
@@ -181,11 +188,14 @@ public class base extends JFrame {
                     repaint();
                     revalidate();
                     if(arc==360 && check_info==true){
-                        enter_bt.setVisible(true);
-                        setVisible(false);
-                        hello_msg.setBounds(210,c.getHeight()/8+125,200,50);
-                        content.add(hello_msg);
-                        hello_msg.setVisible(true);
+                       // setVisible(false);
+                        announce = new Announce(check_info);
+                        announce.setBounds(0,166,600,333);
+                        content.add(announce);
+
+                        hello_msg.setBounds(0,212,200,50);
+                        announce.add(hello_msg);
+                        hello_msg.setVisible(false);
                     }
                     try {
                         Thread.sleep(10);
@@ -203,7 +213,7 @@ public class base extends JFrame {
                     setBackground(Color.white);
                     Graphics2D g2d = (Graphics2D) g;
                     g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                    g2d.setColor(new Color(121,140,53));
+                    g2d.setColor(new Color(121,140,53,80));
                     g2d.fillOval(220, 0, 100, 100);
                     g2d.setColor(new Color(242,189,29));
                     g2d.fill(new Arc2D.Float(220, 0,100, 100, 90, arc, Arc2D.PIE));
@@ -213,6 +223,60 @@ public class base extends JFrame {
                 }
 
         }
+    class Announce extends JPanel {
+        boolean check_info;
+
+        public Announce(boolean check_info){
+            this.check_info = check_info;
+            circle.setVisible(false);
+
+            System.out.println(opaque_text);
+         new Thread(() -> {
+
+            while (opaque_text >= 0) {
+                if(opaque_text == 0){
+
+                    enter_bt.setVisible(true);
+                    hello_msg.setVisible(true);
+                    return;
+                }
+                opaque_text -=25;
+
+                repaint();
+                revalidate();
+
+                try {
+                    Thread.sleep(300);
+                    if(opaque_text == 0){Thread.sleep(1000);}
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    return;
+                }
+            }
+        }).start();
+    }
+
+        public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            System.out.println(opaque_text);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            setBackground(Color.white);
+           // opaque_text = 100;
+
+
+
+            if(check_info == true){
+
+
+                g2d.setColor(new Color(0,0,0,opaque_text));
+
+                g2d.drawString("success",270,20 );
+
+            }
+
+        }
+    }
 
     public static void main(String[] args) {
         new base();
