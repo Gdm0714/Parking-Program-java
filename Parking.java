@@ -143,7 +143,7 @@ public class Parking extends JFrame {
         logo.setBorder(new TitledBorder(new LineBorder(Color.BLUE, 5)));
         header.setBorder(new TitledBorder(new LineBorder(Color.ORANGE, 5)));
 
-//12/3 수정
+//12/3 수정 
 
         bt_floor[0] = new JButton(bt_floor_1_click);
 
