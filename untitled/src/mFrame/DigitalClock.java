@@ -15,7 +15,7 @@ public class DigitalClock extends Thread{
         int second = time.getSecond();
 
         while(true){
-            clock.setText(Integer.toString(hour) + ":" + Integer.toString(minute) + "  " + Integer.toString(second) + "초");
+            clock.setText("<html><body><center>" + Integer.toString(hour) + ":" + Integer.toString(minute) + "<br>" + Integer.toString(second) + "초</center></body></html>");
             second++;
             if(second == 60){
                 second = 0;

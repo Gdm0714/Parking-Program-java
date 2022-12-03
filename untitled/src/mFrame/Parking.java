@@ -47,9 +47,9 @@ public class Parking extends JFrame {
 
     private ImageIcon logo1 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\logo1.jpg");
 
-    private ImageIcon logo2 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\logo2.png");
+    private ImageIcon logo2 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\입차.png");
 
-    private ImageIcon logo3 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\logo.png");
+    private ImageIcon logo3 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\출차.png");
 
     private ImageIcon place = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\images.png");
 
@@ -104,13 +104,13 @@ public class Parking extends JFrame {
 
     private JLabel space;
 
-
     int firstNum = 0;
 
     int secondNum = 0;
 
     int thirdNum = 0;
 
+    JPanel timePanel = new JPanel();
     public Parking(String table_name,String lc_text) {
         db= new Surprise_Db(lc_text);
         db.connect();
@@ -133,8 +133,11 @@ public class Parking extends JFrame {
         header.setBorder(new TitledBorder(new LineBorder(Color.ORANGE, 5)));
 
 
+        time.setFont(new Font("Serif", Font.PLAIN, 15));
+        time.setForeground(Color.WHITE);
+        time.setHorizontalAlignment(SwingConstants.CENTER);
 
-
+        timePanel.add(time);
 
         JPanel page_f[] = new JPanel[3];
         for(int i =0; i<3; i++){
@@ -162,21 +165,23 @@ public class Parking extends JFrame {
                 }
             });
         }
-        cnt_graph[3] = 63;
+        cnt_graph[3] = 0;
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill=GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
+
 
         charge_section.setLayout(new GridLayout(4, 1));
         enter = new JButton("입차");
         exit = new JButton("출차");
         charge2 = new JLabel("정산");
         charge2.setHorizontalAlignment(SwingConstants.CENTER);
+        timePanel.setBackground(Color.BLACK);
         charge_section.add(enter);
         charge_section.add(exit);
         charge_section.add(charge2);
-        charge_section.add(time);
+        charge_section.add(timePanel);
         digitalClock = new DigitalClock(time);
         digitalClock.start();
 
@@ -185,6 +190,7 @@ public class Parking extends JFrame {
         side.setBorder(new TitledBorder(new LineBorder(Color.red,5)));
         side.setLayout(null);
         charge_section.setBorder(new TitledBorder(new LineBorder(color,5)));
+
 
 
 
@@ -293,7 +299,6 @@ public class Parking extends JFrame {
         gbc.gridwidth =1;
         gbc.gridheight=3;
         c.add(charge_section,gbc);
-
 
         gbc.gridx =1;
         gbc.gridy =1;
@@ -546,11 +551,11 @@ public class Parking extends JFrame {
                     int fl = Integer.parseInt(select_floor.getText());
                     int value = Integer.parseInt(num.getText());
                     if (fl == 2) {
-                        value += 20;
+                        value += 21;
                         cnt_graph[1]--;
                         cnt_graph[3]++;
                     } else if (fl == 3) {
-                        value += 41;
+                        value += 42;
                         cnt_graph[2]--;
                         cnt_graph[3]++;
                     }

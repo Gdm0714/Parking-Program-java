@@ -130,10 +130,6 @@ public class base extends JFrame {
         lc_box.setBackground(Color.white);
         content.add(lc_box);
 
-
-
-
-
         gbc.weighty = 0.25;
         gbc.gridx = 0;
         gbc.gridy = 5;
