@@ -36,9 +36,9 @@ public class Parking extends JFrame {
     LocalDateTime[] d2 = new LocalDateTime[63];
     JButton bt_floor[] = new JButton[3];
     String button_image_url[] = {
-            "1","2","3" // 추가 예정
+            "1", "2", "3" // 추가 예정
     };
-    String text_floor[] = { "1층","2층","3층"};
+    String text_floor[] = {"1층", "2층", "3층"};
     long d3;
 
     String c_num;
@@ -85,9 +85,9 @@ public class Parking extends JFrame {
 
     Color purplebubble = new Color(103, 58, 183);
 
-    Color[] colors = { pinky, shinysky, teal, purplebubble };
+    Color[] colors = {pinky, shinysky, teal, purplebubble};
 
-    String[] floorsgraph = { "1st", "2nd", "3rd", "rest" };
+    String[] floorsgraph = {"1st", "2nd", "3rd", "rest"};
 
     public int cnt_whole = 63;
 
@@ -110,9 +110,11 @@ public class Parking extends JFrame {
 
     int thirdNum = 0;
 
+    int count = 0;
     JPanel timePanel = new JPanel();
-    public Parking(String table_name,String lc_text) {
-        db= new Surprise_Db(lc_text);
+
+    public Parking(String table_name, String lc_text) {
+        db = new Surprise_Db(lc_text);
         db.connect();
         //db.default_create();// 1번만 쓰고 지워요 테이블 디폴트값 설정 용도
         setTitle("Test");
@@ -140,23 +142,22 @@ public class Parking extends JFrame {
         timePanel.add(time);
 
         JPanel page_f[] = new JPanel[3];
-        for(int i =0; i<3; i++){
+        for (int i = 0; i < 3; i++) {
             cnt_graph[i] = 0;
-            page_f [i] = new JPanel();
+            page_f[i] = new JPanel();
             bt_floor[i] = new JButton(text_floor[i]);
-            bt_floor[i].setName(i+"");
+            bt_floor[i].setName(i + "");
 
             bt_floor[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    JButton field = (JButton)e.getSource();
+                    JButton field = (JButton) e.getSource();
 
                     int index = Integer.parseInt(field.getName());
-                    for(int i =0;i<3;i++){
-                        if(i==index) {
+                    for (int i = 0; i < 3; i++) {
+                        if (i == index) {
                             page_f[i].setVisible(true);
-                        }
-                        else{
+                        } else {
                             page_f[i].setVisible(false);
                         }
                     }
@@ -167,7 +168,7 @@ public class Parking extends JFrame {
         }
         cnt_graph[3] = 0;
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill=GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
 
@@ -185,13 +186,11 @@ public class Parking extends JFrame {
         digitalClock = new DigitalClock(time);
         digitalClock.start();
 
-        Color color = new Color(204,204,255);
-        content.setBorder(new TitledBorder(new LineBorder(Color.red,5)));
-        side.setBorder(new TitledBorder(new LineBorder(Color.red,5)));
+        Color color = new Color(204, 204, 255);
+        content.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
+        side.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
         side.setLayout(null);
-        charge_section.setBorder(new TitledBorder(new LineBorder(color,5)));
-
-
+        charge_section.setBorder(new TitledBorder(new LineBorder(color, 5)));
 
 
         int a = 0; // 주차공간 id에 접근하기위해서 임의로 값 수정 하기위해 사용한 변수
@@ -221,7 +220,7 @@ public class Parking extends JFrame {
                 //+ "시 " + entertime.getMinute() + "분"
                 c_num = db.get_Car_Num(i + a + 1);
                 parking[i + a] = new JLabel();
-                parking[i + a].setName(i+a+1+"");
+                parking[i + a].setName(i + a + 1 + "");
                 parking[i + a].setIcon(car);
                 parking[i + a].setPreferredSize(new Dimension(150, 170));
                 page_f[stack].add(parking[i + a]);
@@ -242,7 +241,7 @@ public class Parking extends JFrame {
                 parking[i + a] = new JLabel(Integer.toString(i + 1));
                 parking[i + a].setForeground(Color.WHITE);
                 parking[i + a].setPreferredSize(new Dimension(150, 170));
-                parking[i + a].setName(i+a+1+"");
+                parking[i + a].setName(i + a + 1 + "");
                 page_f[stack].add(parking[i + a]);
                 parking[i + a].setBackground(Color.BLACK);
                 parking[i + a].setBorder(new LineBorder(Color.WHITE, 5));
@@ -262,24 +261,24 @@ public class Parking extends JFrame {
             page_f[1].setVisible(false);
             page_f[2].setVisible(false);
         }
-        gbc.ipady =0;
-        gbc.ipadx =0;
+        gbc.ipady = 0;
+        gbc.ipadx = 0;
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth =1;
-        gbc.gridheight =1;
-        c.add(logo,gbc);
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        c.add(logo, gbc);
 
         System.out.println(content.getSize());
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.gridwidth =3;
-        gbc.gridheight =1;
-        c.add(header,gbc);
+        gbc.gridwidth = 3;
+        gbc.gridheight = 1;
+        c.add(header, gbc);
 
         header.setLayout(new FlowLayout());
-        for(int i =0; i<3;i++){
+        for (int i = 0; i < 3; i++) {
             header.add(bt_floor[i]);
         }
 
@@ -287,24 +286,24 @@ public class Parking extends JFrame {
 
         //c.add(field_c);
         gbc.weighty = 0.3;
-        gbc.gridx =0;
-        gbc.gridy =1;
-        gbc.gridwidth =1;
-        gbc.gridheight=5;
-        c.add(side,gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 5;
+        c.add(side, gbc);
 
         gbc.weighty = 0.1;
-        gbc.gridx =0;
-        gbc.gridy =6;
-        gbc.gridwidth =1;
-        gbc.gridheight=3;
-        c.add(charge_section,gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 3;
+        c.add(charge_section, gbc);
 
-        gbc.gridx =1;
-        gbc.gridy =1;
-        gbc.gridheight=9;
-        gbc.gridwidth =3;
-        c.add(content,gbc);
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.gridheight = 9;
+        gbc.gridwidth = 3;
+        c.add(content, gbc);
 
         setSize(1432, 922);
         setVisible(true);
@@ -316,19 +315,22 @@ public class Parking extends JFrame {
                 public void mouseClicked(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
                     int ed = Integer.parseInt(label.getName());
-                    if(e.getClickCount() == 2){
-                        if(db.check_parking(ed) == true) {
-                            c_num = db.get_Car_Num(ed);
-                            entertime = db.get_Init_Time(ed);
-                            label.setIcon(null);
-                            label.setText("<html><body><center>"
-                                    + c_num + "<br><br>" + entertime.getHour()
-                                    + "시 " + entertime.getMinute() + "분" + "</center></body></html>");
-                            label.setBackground(Color.pink);
-                        }
-                        if (label.getText().length() > 4) {
+                    if (e.getClickCount() == 2) {
+                        if (count == 0) {
+                            if (db.check_parking(ed) == true) {
+                                c_num = db.get_Car_Num(ed);
+                                entertime = db.get_Init_Time(ed);
+                                label.setIcon(null);
+                                label.setText("<html><body><center>"
+                                        + c_num + "<br><br>" + entertime.getHour()
+                                        + "시 " + entertime.getMinute() + "분" + "</center></body></html>");
+                                label.setBackground(Color.pink);
+                                count = 1;
+                            }
+                        } else if (count == 1) {
                             label.setIcon(car);
                             label.setText("");
+                            count = 0;
                         }
                     }
                 }
@@ -558,16 +560,14 @@ public class Parking extends JFrame {
                         value += 42;
                         cnt_graph[2]--;
                         cnt_graph[3]++;
-                    }
-                    else {
+                    } else {
                         cnt_graph[0]--;
                         cnt_graph[3]++;
                     }
                     if (d3 > 1800) {
                         d3 -= 1800;
                         d3 = d3 / 600 * 500 + 1500;
-                    }
-                    else if(d3 <= 1800 || d3 > 0) {
+                    } else if (d3 <= 1800 || d3 > 0) {
                         d3 = 1500;
                     }
                     s = Long.toString(d3);
@@ -630,6 +630,7 @@ public class Parking extends JFrame {
         }
 
     }
+
     class Chart_Circle extends JPanel {
         public void paintComponent(Graphics g) {
             int sum = 0;
@@ -640,7 +641,7 @@ public class Parking extends JFrame {
             int startAngle = 0;
             for (int i = 0; i < floorsgraph.length; i++) {
                 g.setColor(colors[i]);
-                g.drawString(floorsgraph[i] + " :" + cnt_graph[i] + "", 30, 200+i*30);
+                g.drawString(floorsgraph[i] + " :" + cnt_graph[i] + "", 30, 200 + i * 30);
             }
             for (int i = 0; i < floorsgraph.length; i++) {
                 sum += cnt_graph[i];
@@ -664,8 +665,9 @@ public class Parking extends JFrame {
 
         }
     }
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
+        new base();
     }
 }
 
