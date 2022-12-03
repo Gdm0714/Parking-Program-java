@@ -19,14 +19,13 @@ public class Parking extends JFrame {
     private JButton enter, exit;
 
     public JLabel[] parking = new JLabel[63];
-
     public JLabel charge2;
 
     BevelBorder border;
 
     JComboBox<String> field_c = new JComboBox<String>();
 
-    String text_floor[] = {"1층", "2층", "3층"};
+    private DigitalClock digitalClock;
 
     Surprise_Db db;
 
@@ -35,7 +34,11 @@ public class Parking extends JFrame {
     public LocalDateTime entertime;
 
     LocalDateTime[] d2 = new LocalDateTime[63];
-
+    JButton bt_floor[] = new JButton[3];
+    String button_image_url[] = {
+            "1","2","3" // 추가 예정
+    };
+    String text_floor[] = { "1층","2층","3층"};
     long d3;
 
     String c_num;
@@ -52,7 +55,7 @@ public class Parking extends JFrame {
 
     private ImageIcon conBack = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\img.png");
 
-    private showThread st;
+    //private showThread st;
 
     private JLabel enterNotice = new JLabel();
 
@@ -68,15 +71,11 @@ public class Parking extends JFrame {
 
     JPanel header = new JPanel();
 
-    JPanel side = new JPanel();
+    Chart_Circle side = new Chart_Circle();
 
     JPanel content = new JPanel();
 
-    JPanel sp1 = new JPanel();
-
-    JPanel sp2 = new JPanel();
-
-    JPanel sp3 = new JPanel();
+    JPanel charge_section = new JPanel();
 
     Color pinky = new Color(236, 64, 122);
 
@@ -88,12 +87,13 @@ public class Parking extends JFrame {
 
     Color[] colors = { pinky, shinysky, teal, purplebubble };
 
+    String[] floorsgraph = { "1st", "2nd", "3rd", "rest" };
+
     public int cnt_whole = 63;
 
     public int cnt_graph[] = new int[4];
-    JPanel sp4 = new JPanel();
 
-    JPanel sp5 = new JPanel();
+    JLabel time = new JLabel("");
 
     int[] angle = new int[4];
 
@@ -103,8 +103,6 @@ public class Parking extends JFrame {
     private Container c;
 
     private JLabel space;
-
-    String[] floorsGraph = { "1st", "2nd", "3rd", "rest" };
 
 
     int firstNum = 0;
@@ -127,71 +125,69 @@ public class Parking extends JFrame {
           비율 설정해서 화면 분할 한 거에여
           분할된 화면은 내용물 크기에 따라 x축이 자동으로 설정되고 높이는 고정
         */
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        field_c.setPreferredSize(new Dimension(100, 50));
+
 
         content.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
         side.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
         logo.setBorder(new TitledBorder(new LineBorder(Color.BLUE, 5)));
         header.setBorder(new TitledBorder(new LineBorder(Color.ORANGE, 5)));
-        side.setLayout(new GridLayout(6, 1));
 
 
-        space = new JLabel("<html><body><center>" + "1층에" + firstNum + "대 주차되어있습니다.<br>2층에" + secondNum +
-                "대 주차되어있습니다.<br>3층에" + thirdNum + "대 주차되어있습니다.</center></body></html>");
-        space.setFont(new Font("Gothic", Font.PLAIN, 20));
-        space.setForeground(Color.BLUE);
 
-        side.add(sp1);
-        sp1.setBackground(Color.GRAY);
-        side.add(sp2);
-        sp2.setBackground(Color.YELLOW);
-        side.add(sp3);
-        sp3.setBackground(Color.GRAY);
-        side.add(sp4);
-        sp4.setBackground(Color.GRAY);
-        side.add(sp5);
-        sp5.setBackground(Color.GRAY);
+
 
         JPanel page_f[] = new JPanel[3];
-        for (int i = 0; i < 3; i++) {
+        for(int i =0; i<3; i++){
             cnt_graph[i] = 0;
-            page_f[i] = new JPanel();
-            page_f[i].setBackground(Color.BLACK);
-            field_c.addItem(text_floor[i]);
+            page_f [i] = new JPanel();
+            bt_floor[i] = new JButton(text_floor[i]);
+            bt_floor[i].setName(i+"");
+
+            bt_floor[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JButton field = (JButton)e.getSource();
+
+                    int index = Integer.parseInt(field.getName());
+                    for(int i =0;i<3;i++){
+                        if(i==index) {
+                            page_f[i].setVisible(true);
+                        }
+                        else{
+                            page_f[i].setVisible(false);
+                        }
+                    }
+
+
+                }
+            });
         }
         cnt_graph[3] = 63;
-        field_c.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JComboBox<String> field = (JComboBox<String>) e.getSource();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill=GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
 
-                int index = field.getSelectedIndex();
-                for (int i = 0; i < 3; i++) {
-                    if (i == index) {
-                        page_f[i].setVisible(true);
-                    } else {
-                        page_f[i].setVisible(false);
-                    }
-                }
-            }
-        });
-
+        charge_section.setLayout(new GridLayout(4, 1));
         enter = new JButton("입차");
         exit = new JButton("출차");
         charge2 = new JLabel("정산");
+        charge2.setHorizontalAlignment(SwingConstants.CENTER);
+        charge_section.add(enter);
+        charge_section.add(exit);
+        charge_section.add(charge2);
+        charge_section.add(time);
+        digitalClock = new DigitalClock(time);
+        digitalClock.start();
 
-        charge2.setFont(new Font("Gothic", Font.PLAIN, 40));
-        border = new BevelBorder(BevelBorder.RAISED);
-        enter.setBounds(150, 725, 100, 50);
-        enter.setBackground(Color.LIGHT_GRAY);
-        exit.setBounds(570, 725, 100, 50);
-        exit.setBackground(Color.LIGHT_GRAY);
-        charge2.setBounds(1000, 700, 100, 100);
-        charge2.setBackground(Color.WHITE);
+        Color color = new Color(204,204,255);
+        content.setBorder(new TitledBorder(new LineBorder(Color.red,5)));
+        side.setBorder(new TitledBorder(new LineBorder(Color.red,5)));
+        side.setLayout(null);
+        charge_section.setBorder(new TitledBorder(new LineBorder(color,5)));
+
+
+
         int a = 0; // 주차공간 id에 접근하기위해서 임의로 값 수정 하기위해 사용한 변수
         int stack = 0;// 주차장의 층 확인용 변수
 
@@ -229,13 +225,10 @@ public class Parking extends JFrame {
                 parking[i + a].setBorder(border);
                 parking[i + a].setOpaque(true);
                 if (stack == 0) {
-                    cnt_graph[3]--;
                     cnt_graph[0]++;
                 } else if (stack == 1) {
-                    cnt_graph[3]--;
                     cnt_graph[1]++;
                 } else if (stack == 2) {
-                    cnt_graph[3]--;
                     cnt_graph[2]++;
                 }
 
@@ -243,6 +236,7 @@ public class Parking extends JFrame {
                 parking[i + a] = new JLabel(Integer.toString(i + 1));
                 parking[i + a].setForeground(Color.WHITE);
                 parking[i + a].setPreferredSize(new Dimension(150, 170));
+                parking[i + a].setName(i+a+1+"");
                 page_f[stack].add(parking[i + a]);
                 parking[i + a].setBackground(Color.BLACK);
                 parking[i + a].setBorder(new LineBorder(Color.WHITE, 5));
@@ -250,7 +244,7 @@ public class Parking extends JFrame {
                 parking[i + a].setHorizontalAlignment(parking[i + a].CENTER);
 
                 parking[i + a].setOpaque(true);
-
+                cnt_graph[3]++;
             }
         }
 
@@ -262,38 +256,50 @@ public class Parking extends JFrame {
             page_f[1].setVisible(false);
             page_f[2].setVisible(false);
         }
-
-        sp1.add(enter);
-        sp1.add(exit);
-        sp2.add(charge2);
-        sp3.add(field_c);
-        sp4.add(space);
+        gbc.ipady =0;
+        gbc.ipadx =0;
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        c.add(logo, gbc);
+        gbc.gridwidth =1;
+        gbc.gridheight =1;
+        c.add(logo,gbc);
 
+        System.out.println(content.getSize());
         gbc.gridx = 1;
         gbc.gridy = 0;
-        gbc.gridwidth = 3;
-        gbc.gridheight = 1;
-        c.add(header, gbc);
+        gbc.gridwidth =3;
+        gbc.gridheight =1;
+        c.add(header,gbc);
+
+        header.setLayout(new FlowLayout());
+        for(int i =0; i<3;i++){
+            header.add(bt_floor[i]);
+        }
+
+        header.add(new JLabel(table_name));
+
         //c.add(field_c);
-        gbc.weighty = 0.2;
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 8;
-        c.add(side, gbc);
+        gbc.weighty = 0.3;
+        gbc.gridx =0;
+        gbc.gridy =1;
+        gbc.gridwidth =1;
+        gbc.gridheight=5;
+        c.add(side,gbc);
 
-        gbc.gridx = 1;
-        gbc.gridy = 1;
-        gbc.gridheight = 8;
-        gbc.gridwidth = 3;
-        c.add(content, gbc);
-        sp5.add(new leftPanel2());
+        gbc.weighty = 0.1;
+        gbc.gridx =0;
+        gbc.gridy =6;
+        gbc.gridwidth =1;
+        gbc.gridheight=3;
+        c.add(charge_section,gbc);
+
+
+        gbc.gridx =1;
+        gbc.gridy =1;
+        gbc.gridheight=9;
+        gbc.gridwidth =3;
+        c.add(content,gbc);
 
         setSize(1432, 922);
         setVisible(true);
@@ -302,17 +308,41 @@ public class Parking extends JFrame {
         for (int i = 0; i < 62; i++) {
             parking[i].addMouseListener(new MouseAdapter() {
                 @Override
-                public void mouseEntered(MouseEvent e) {
+                public void mouseClicked(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
-                        int ed = Integer.parseInt(label.getName());
-                        c_num = db.get_Car_Num(ed);
-                        entertime = db.get_Init_Time(ed);
+                    int ed = Integer.parseInt(label.getName());
+                    if(e.getClickCount() == 2){
+                        if(db.check_parking(ed) == true) {
+                            c_num = db.get_Car_Num(ed);
+                            entertime = db.get_Init_Time(ed);
                             label.setIcon(null);
                             label.setText("<html><body><center>"
                                     + c_num + "<br><br>" + entertime.getHour()
                                     + "시 " + entertime.getMinute() + "분" + "</center></body></html>");
                             label.setBackground(Color.pink);
+                        }
+                        if (label.getText().length() > 4) {
+                            label.setIcon(car);
+                            label.setText("");
+                        }
+                    }
+                }
 
+                /*@Override
+
+                public void mouseEntered(MouseEvent e) {
+                    JLabel label = (JLabel) e.getSource();
+
+                    int ed = Integer.parseInt(label.getName());
+                    if(db.check_parking(ed) == true) {
+                        c_num = db.get_Car_Num(ed);
+                        entertime = db.get_Init_Time(ed);
+                        label.setIcon(null);
+                        label.setText("<html><body><center>"
+                                + c_num + "<br><br>" + entertime.getHour()
+                                + "시 " + entertime.getMinute() + "분" + "</center></body></html>");
+                        label.setBackground(Color.pink);
+                    }
 
                 }
 
@@ -323,7 +353,7 @@ public class Parking extends JFrame {
                         label.setIcon(car);
                         label.setText("");
                     }
-                }
+                }*/
             });
         }
         content.setBackground(Color.BLACK);
@@ -395,13 +425,19 @@ public class Parking extends JFrame {
                     c_num = carnum.getText();
                     int fl = Integer.parseInt(floor.getText());
                     if (fl == 2) {
-                        select_index += 20;
+                        select_index += 21;
+                        cnt_graph[1]++;
+                        cnt_graph[3]--;
                         secondNum++;
                     } else if (fl == 3) {
-                        select_index += 41;
+                        select_index += 42;
                         thirdNum++;
+                        cnt_graph[2]++;
+                        cnt_graph[3]--;
                     } else if (fl == 1) {
                         firstNum++;
+                        cnt_graph[0]++;
+                        cnt_graph[3]--;
                     }
                     System.out.printf(select_index + "");
                     parking[select_index - 1].setText("");
@@ -410,8 +446,9 @@ public class Parking extends JFrame {
 
                     System.out.println(select_index - 1 + c_num);
                     db.init_car(select_index - 1, c_num, entertime, fl);
-
+                    side.repaint();
                     setVisible(false);//입력 후 창 닫기
+
                 }
             });
 
@@ -431,8 +468,8 @@ public class Parking extends JFrame {
                     enterNotice.setForeground(Color.BLUE);
                     enterNotice.setText("<html><body><center>" + +entertime.getHour() + "시" + entertime.getMinute() + "분<br>"
                             + Integer.toString(fl) + "층" + Integer.toString(select_index) + "번 자리에 " + c_num + "차량 입차되었습니다</center></body></html>");
-                    st = new showThread(enterNotice, header, 0, e.getY());
-                    st.start();
+                    /*st = new showThread(enterNotice, header, 0, e.getY());
+                    st.start();*/
                     revalidate();
                 }
             });
@@ -510,8 +547,16 @@ public class Parking extends JFrame {
                     int value = Integer.parseInt(num.getText());
                     if (fl == 2) {
                         value += 20;
+                        cnt_graph[1]--;
+                        cnt_graph[3]++;
                     } else if (fl == 3) {
                         value += 41;
+                        cnt_graph[2]--;
+                        cnt_graph[3]++;
+                    }
+                    else {
+                        cnt_graph[0]--;
+                        cnt_graph[3]++;
                     }
                     if (d3 > 1800) {
                         d3 -= 1800;
@@ -530,6 +575,7 @@ public class Parking extends JFrame {
                     parking[value - 1].setBackground(Color.BLACK);
                     parking[value - 1].setBorder(new LineBorder(Color.WHITE, 5));
                     parking[value - 1].setText(num.getText());
+                    side.repaint();
                 }
 
             });
@@ -548,8 +594,8 @@ public class Parking extends JFrame {
                     exitNotice.setFont(new Font("Serif", Font.BOLD, 30));
                     exitNotice.setForeground(Color.BLUE);
                     exitNotice.setText("<html><body><center>" + Integer.toString(fl) + "층 " + Integer.toString(select_index) + "번 자리에 " + exittime.getHour() + "시 " + exittime.getMinute() + "분 출차되었습니다</center></body></html>");
-                    st = new showThread(exitNotice, header, 0, e.getY());
-                    st.start();
+                    /*st = new showThread(exitNotice, header, 0, e.getY());
+                    st.start();*/
                     revalidate();
                 }
             });
@@ -579,40 +625,40 @@ public class Parking extends JFrame {
         }
 
     }
-    class leftPanel2 extends JPanel {
+    class Chart_Circle extends JPanel {
         public void paintComponent(Graphics g) {
             int sum = 0;
             super.paintComponent(g);
+            //setSize(c.getWidth()/5,c.getHeight()/9*5);
+            setBackground(Color.white);
 
             int startAngle = 0;
-            for (int i = 0; i < floorsGraph.length; i++) {
+            for (int i = 0; i < floorsgraph.length; i++) {
                 g.setColor(colors[i]);
-                g.drawString(floorsGraph[i] + " " + Math.round(angle[i] * 100 / 360) + "%", 100 + i * 100, 20);
+                g.drawString(floorsgraph[i] + " :" + cnt_graph[i] + "", 30, 200+i*30);
             }
-            for (int i = 0; i < floorsGraph.length; i++) {
-
+            for (int i = 0; i < floorsgraph.length; i++) {
                 sum += cnt_graph[i];
             }
-            for (int i = 0; i < floorsGraph.length; i++) {
+            for (int i = 0; i < floorsgraph.length; i++) {
                 angle[i] = (int) Math.round((double) cnt_graph[i] / (double) sum * 360);
-
+                System.out.println(angle[i]);
                 /*
                  * repaint();s g.setColor(colors[i]);
                  * g.fillArc(150,50,200,200,startAngle,angle[i]); startAngle += angle[i];
                  */
             }
             g.setColor(pinky);
-            g.fillArc(100, 360, 200, 200, 0, angle[0]);
+            g.fillArc(30, 50, 100, 100, 0, angle[0]);
             g.setColor(shinysky);
-            g.fillArc(100, 360, 200, 200, angle[0], angle[1]);
+            g.fillArc(30, 50, 100, 100, angle[0], angle[1]);
             g.setColor(purplebubble);
-            g.fillArc(100, 360, 200, 200, angle[0] + angle[1], angle[2]);
+            g.fillArc(30, 50, 100, 100, angle[0] + angle[1], angle[2]);
             g.setColor(Color.GRAY);
-            g.fillArc(100, 360, 200, 200, angle[0] + angle[1] + angle[2], angle[3]);
-            setSize(200, 200);
+            g.fillArc(30, 50, 100, 100, angle[0] + angle[1] + angle[2], angle[3]);
+
         }
     }
-
     public static void main(String[] args) {
 
     }
