@@ -55,6 +55,14 @@ public class Parking extends JFrame {
     private ImageIcon place = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\images.png");
 
     private ImageIcon conBack = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\img.png");
+//12/3 수정
+    private  ImageIcon bt_floor_1 = new ImageIcon("C:\\Users\\user\\Desktop\\bt_floor_1.png");
+    private  ImageIcon bt_floor_2 = new ImageIcon("C:\\Users\\user\\Desktop\\bt_floor_2.png");
+    private  ImageIcon bt_floor_3 = new ImageIcon("C:\\Users\\user\\Desktop\\bt_floor_3.png");
+    private  ImageIcon bt_floor_1_click = new ImageIcon("C:\\Users\\user\\Desktop\\bt_floor_1_click.png");
+    private  ImageIcon bt_floor_2_click = new ImageIcon("C:\\Users\\user\\Desktop\\bt_floor_2_click.png");
+    private  ImageIcon bt_floor_3_click = new ImageIcon("C:\\Users\\user\\Desktop\\bt_floor_3_click.png");
+//12/3 수정 완
 
     private showThread st;
 
@@ -112,6 +120,8 @@ public class Parking extends JFrame {
 
     int thirdNum = 0;
 
+    boolean check_bt[] ={true,false,false};
+
     public Parking(String table_name,String lc_text) {
         db= new Surprise_Db(lc_text);
         db.connect();
@@ -133,26 +143,33 @@ public class Parking extends JFrame {
         logo.setBorder(new TitledBorder(new LineBorder(Color.BLUE, 5)));
         header.setBorder(new TitledBorder(new LineBorder(Color.ORANGE, 5)));
 
+//12/3 수정
 
+        bt_floor[0] = new JButton(bt_floor_1_click);
 
+        bt_floor[1] = new JButton(bt_floor_2);
 
+        bt_floor[2] = new JButton(bt_floor_3);
 
         JPanel page_f[] = new JPanel[3];
         for(int i =0; i<3; i++){
             cnt_graph[i] = 0;
             page_f [i] = new JPanel();
-            bt_floor[i] = new JButton(text_floor[i]);
+            bt_floor[i].setSize(10,10);
             bt_floor[i].setName(i+"");
+            bt_floor[i].setBackground(Color.gray);
+            bt_floor[i].setBorder(null);
 
             bt_floor[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     JButton field = (JButton)e.getSource();
-
                     int index = Integer.parseInt(field.getName());
                     for(int i =0;i<3;i++){
+
                         if(i==index) {
                             page_f[i].setVisible(true);
+
                         }
                         else{
                             page_f[i].setVisible(false);
@@ -162,7 +179,31 @@ public class Parking extends JFrame {
 
                 }
             });
+            bt_floor[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    JButton field = (JButton)e.getSource();
+                    int index = Integer.parseInt(field.getName());
+                    if(index == 0){
+                        bt_floor[0].setIcon(bt_floor_1_click);
+                        bt_floor[1].setIcon(bt_floor_2);
+                        bt_floor[2].setIcon(bt_floor_3);
+                    }
+                    if(index == 1){
+                        bt_floor[1].setIcon(bt_floor_2_click);
+                        bt_floor[0].setIcon(bt_floor_1);
+                        bt_floor[2].setIcon(bt_floor_3);
+                    }
+                    if(index == 2){
+                        bt_floor[2].setIcon(bt_floor_3_click);
+                        bt_floor[1].setIcon(bt_floor_2);
+                        bt_floor[0].setIcon(bt_floor_1);
+                    }
+                }
+            });
         }
+        //12/3 수정완
         cnt_graph[3] = 63;
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill=GridBagConstraints.BOTH;
@@ -306,7 +347,7 @@ public class Parking extends JFrame {
                 public void mouseEntered(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
 
-                        int ed = Integer.parseInt(label.getName());
+                    int ed = Integer.parseInt(label.getName());
                     if(db.check_parking(ed) == true) {
                         c_num = db.get_Car_Num(ed);
                         entertime = db.get_Init_Time(ed);
@@ -637,4 +678,3 @@ public class Parking extends JFrame {
 
     }
 }
-
