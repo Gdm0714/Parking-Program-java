@@ -110,7 +110,8 @@ public class Parking extends JFrame {
 
     int thirdNum = 0;
 
-    int count = 0;
+    int j;
+    int []count = new int[63];
     JPanel timePanel = new JPanel();
 
     public Parking(String table_name, String lc_text) {
@@ -135,6 +136,10 @@ public class Parking extends JFrame {
         header.setBorder(new TitledBorder(new LineBorder(Color.ORANGE, 5)));
 
 
+
+        for(int i = 0; i<63; i++){
+            count[i] = 0;
+        }
         time.setFont(new Font("Serif", Font.PLAIN, 15));
         time.setForeground(Color.WHITE);
         time.setHorizontalAlignment(SwingConstants.CENTER);
@@ -305,18 +310,17 @@ public class Parking extends JFrame {
         gbc.gridwidth = 3;
         c.add(content, gbc);
 
-        setSize(1432, 922);
-        setVisible(true);
+
 
         logo.add(logoLabel);
-        for (int i = 0; i < 62; i++) {
-            parking[i].addMouseListener(new MouseAdapter() {
+        for (j = 0; j < 62; j++) {
+            parking[j].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
                     int ed = Integer.parseInt(label.getName());
                     if (e.getClickCount() == 2) {
-                        if (count == 0) {
+                        if (count[j] == 0) {
                             if (db.check_parking(ed) == true) {
                                 c_num = db.get_Car_Num(ed);
                                 entertime = db.get_Init_Time(ed);
@@ -325,12 +329,12 @@ public class Parking extends JFrame {
                                         + c_num + "<br><br>" + entertime.getHour()
                                         + "시 " + entertime.getMinute() + "분" + "</center></body></html>");
                                 label.setBackground(Color.pink);
-                                count = 1;
+                                count[j] = 1;
                             }
-                        } else if (count == 1) {
+                        } else if (count[j] == 1) {
                             label.setIcon(car);
                             label.setText("");
-                            count = 0;
+                            count[j] = 0;
                         }
                     }
                 }
@@ -385,6 +389,8 @@ public class Parking extends JFrame {
                 new Exit();
             }
         });
+        setSize(1432, 922);
+        setVisible(true);
     }
 
     public class Enter extends JFrame {
