@@ -43,9 +43,9 @@ public class Parking extends JFrame {
 
     String c_num;
 
-    private ImageIcon car = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\car.png");
+    private ImageIcon car = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\enter.png");
 
-    private ImageIcon logo1 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\logo1.jpg");
+    private ImageIcon logo1 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\inje.png");
 
     private ImageIcon logo2 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\입차.png");
 
@@ -64,8 +64,7 @@ public class Parking extends JFrame {
         Image img = logo1.getImage();
 
         public void paintComponent(Graphics g) {
-            g.drawImage(img, 0, 0, this);
-        }
+            g.drawImage(img, 0, 0, this);}
     };
 
 
@@ -81,11 +80,11 @@ public class Parking extends JFrame {
 
     Color shinysky = new Color(0, 188, 212);
 
-    Color teal = new Color(220, 231, 117);
+    Color teal = new Color(153, 204, 153);
 
     Color purplebubble = new Color(103, 58, 183);
 
-    Color[] colors = {pinky, shinysky, teal, purplebubble};
+    Color[] colors = {pinky, shinysky, purplebubble, Color.gray};
 
     String[] floorsgraph = {"1st", "2nd", "3rd", "rest"};
 
@@ -130,10 +129,10 @@ public class Parking extends JFrame {
         */
 
 
-        content.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
-        side.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
-        logo.setBorder(new TitledBorder(new LineBorder(Color.BLUE, 5)));
-        header.setBorder(new TitledBorder(new LineBorder(Color.ORANGE, 5)));
+        //content.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
+        //side.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
+        //logo.setBorder(new TitledBorder(new LineBorder(Color.BLUE, 5)));
+        //header.setBorder(new TitledBorder(new LineBorder(Color.ORANGE, 5)));
 
 
 
@@ -150,6 +149,7 @@ public class Parking extends JFrame {
         for (int i = 0; i < 3; i++) {
             cnt_graph[i] = 0;
             page_f[i] = new JPanel();
+            page_f[i].setBackground(new Color(105, 105, 105));
             bt_floor[i] = new JButton(text_floor[i]);
             bt_floor[i].setName(i + "");
 
@@ -181,6 +181,8 @@ public class Parking extends JFrame {
         charge_section.setLayout(new GridLayout(4, 1));
         enter = new JButton("입차");
         exit = new JButton("출차");
+        enter.setBackground(Color.white);
+        exit.setBackground(Color.white);
         charge2 = new JLabel("정산");
         charge2.setHorizontalAlignment(SwingConstants.CENTER);
         timePanel.setBackground(Color.BLACK);
@@ -192,11 +194,10 @@ public class Parking extends JFrame {
         digitalClock.start();
 
         Color color = new Color(204, 204, 255);
-        content.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
-        side.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
+        //content.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
+        //side.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
         side.setLayout(null);
-        charge_section.setBorder(new TitledBorder(new LineBorder(color, 5)));
-
+        //charge_section.setBorder(new TitledBorder(new LineBorder(color, 5)));
 
         int a = 0; // 주차공간 id에 접근하기위해서 임의로 값 수정 하기위해 사용한 변수
         int stack = 0;// 주차장의 층 확인용 변수
@@ -248,7 +249,7 @@ public class Parking extends JFrame {
                 parking[i + a].setPreferredSize(new Dimension(150, 170));
                 parking[i + a].setName(i + a + 1 + "");
                 page_f[stack].add(parking[i + a]);
-                parking[i + a].setBackground(Color.BLACK);
+                parking[i + a].setBackground(new Color(105, 105, 105));
                 parking[i + a].setBorder(new LineBorder(Color.WHITE, 5));
                 parking[i + a].setFont(new Font("Gothic", Font.PLAIN, 20));
                 parking[i + a].setHorizontalAlignment(parking[i + a].CENTER);
@@ -260,7 +261,7 @@ public class Parking extends JFrame {
 
         for (int i = 0; i < 3; i++) {
             page_f[i].setLayout(new GridLayout(3, 7, 0, 50));
-            page_f[i].setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
+            //page_f[i].setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
             content.add(page_f[i]);
             page_f[0].setVisible(true);
             page_f[1].setVisible(false);
@@ -328,7 +329,7 @@ public class Parking extends JFrame {
                                 label.setText("<html><body><center>"
                                         + c_num + "<br><br>" + entertime.getHour()
                                         + "시 " + entertime.getMinute() + "분" + "</center></body></html>");
-                                label.setBackground(Color.pink);
+                                label.setBackground(new Color(255, 051, 051));
                                 count[j] = 1;
                             }
                         } else if (count[j] == 1) {
@@ -367,9 +368,9 @@ public class Parking extends JFrame {
                 }*/
             });
         }
-        content.setBackground(Color.BLACK);
+        content.setBackground(Color.lightGray);
         side.setBackground(Color.GRAY);
-        header.setBackground(Color.GRAY);
+        header.setBackground(Color.lightGray);
 
 
         enter.addActionListener(new ActionListener() {
@@ -389,7 +390,7 @@ public class Parking extends JFrame {
                 new Exit();
             }
         });
-        setSize(1432, 922);
+        setSize(1732, 822);
         setVisible(true);
     }
 
@@ -583,7 +584,7 @@ public class Parking extends JFrame {
                     db.Out_car(value);
                     parking[value - 1].setIcon(null);
                     parking[value - 1].setForeground(Color.WHITE);
-                    parking[value - 1].setBackground(Color.BLACK);
+                    parking[value - 1].setBackground(new Color(105, 105, 105));
                     parking[value - 1].setBorder(new LineBorder(Color.WHITE, 5));
                     parking[value - 1].setText(num.getText());
                     side.repaint();
@@ -666,7 +667,7 @@ public class Parking extends JFrame {
             g.fillArc(30, 50, 100, 100, angle[0], angle[1]);
             g.setColor(purplebubble);
             g.fillArc(30, 50, 100, 100, angle[0] + angle[1], angle[2]);
-            g.setColor(Color.GRAY);
+            g.setColor(Color.lightGray);
             g.fillArc(30, 50, 100, 100, angle[0] + angle[1] + angle[2], angle[3]);
 
         }
