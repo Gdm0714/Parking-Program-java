@@ -38,8 +38,6 @@ public class DB_Connection {
     /** 데이터베이스에서 정보 탐색 */
 
     public boolean login(String combo_item, String pw) {
-        boolean id_c = false;
-        boolean pw_c = false;
         String table_pw="";
         try {
             String SQL = "SELECT myPw FROM login WHERE location = '"+combo_item+"';";
