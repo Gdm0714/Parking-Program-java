@@ -50,14 +50,16 @@ public class base extends JFrame {
     public base() {
 
         db.connect();
-        setTitle("메인 화면");
+        setTitle("관리자 로그인");
         for(int i =0;  i<3;i++){
             lc_box.addItem(location[i]);
         }
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        c = getContentPane();
+        c =getContentPane();
         c.setLayout(new GridBagLayout());
+
+        c.setBackground(new Color(128,128,128));
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill=GridBagConstraints.BOTH;
         gbc.weightx = 1.0;
@@ -93,7 +95,7 @@ public class base extends JFrame {
         gbc.insets= new Insets(3,3,0,3);
         c.add(header,gbc);
 
-        header.setBackground(new Color(191,191,191));
+        header.setBackground(new Color(128,128,128));
         header.setLayout(null);
         header.setBorder(new MatteBorder(10,10,0,10,Color.white));
         JLabel title = new JLabel("  Welcome The Parking System.");
@@ -111,10 +113,11 @@ public class base extends JFrame {
 
         gbc.insets= new Insets(0,3,0,3);
         c.add(content,gbc);
-        content.setBackground(new Color(191,191,191));
+        content.setBackground(new Color(128,128,128));
         content.setBorder(new MatteBorder(0,10,0,10,Color.white));
         content.setLayout(null);
         JLabel content_text = new JLabel("카놀라유");
+        content_text.setFont(title_font);
         content_text.setBounds(250,c.getHeight()/8,600,100);
         content_text.setFont(title_font);
         content.add(content_text);
@@ -136,7 +139,7 @@ public class base extends JFrame {
         gbc.gridwidth =1;
         gbc.gridheight =2;
         c.add(footer,gbc);
-        footer.setBackground(new Color(192,192,192));
+        footer.setBackground(new Color(128,128,128));
         footer.setBorder(new MatteBorder(0,10,0,10,Color.white));
         footer.setLayout(null);
         log.setBounds(190,c.getHeight()/6,200,50);
@@ -194,9 +197,9 @@ public class base extends JFrame {
                     if(arc==360 && check_info==true){
                         // setVisible(false);
                         announce = new Announce(check_info);
-                        announce.setBounds(10,166,550,111);
+                        announce.setBounds(150,166,550,111);
                         content.add(announce);
-                        announce.setBackground(new Color(192,192,192));
+                        announce.setBackground(new Color(128,128,128));
                         hello_msg.setBounds(240,212,200,50);
 
                         announce.add(hello_msg);
@@ -205,7 +208,7 @@ public class base extends JFrame {
                     }
                     else if(arc == 360 && check_info == false){
                         announce = new Announce(check_info);
-                        announce.setBackground(new Color(192,192,192));
+                        announce.setBackground(new Color(128,128,128));
                         announce.setBounds(130,166,600,111);
                         content.add(announce);
                     }
@@ -222,14 +225,14 @@ public class base extends JFrame {
 
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-            setBackground(new Color(192,192,192));
+            setBackground(new Color(128,128,128));
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             g2d.setColor(new Color(121,140,53,80));
             g2d.fillOval(230, 0, 100, 100);
             g2d.setColor(new Color(242,189,29));
             g2d.fill(new Arc2D.Float(230, 0,100, 100, 90, arc, Arc2D.PIE));
-            g2d.setColor(new Color(192,192,192));
+            g2d.setColor(new Color(128,128,128));
 
             g2d.fillOval(250, 20, 60, 60);
 
@@ -259,7 +262,7 @@ public class base extends JFrame {
                             return;
                         }
 
-                        opaque_text -= 25;
+                        opaque_text -= 250;
 
                         repaint();
                         revalidate();
@@ -267,7 +270,7 @@ public class base extends JFrame {
                         try {
                             Thread.sleep(300);
                             if (opaque_text == 0) {
-                                Thread.sleep(1000);
+                                Thread.sleep(10);
                             }
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
@@ -278,8 +281,8 @@ public class base extends JFrame {
             }
             else{
                 Password_t.setText("Please, Retry");
-                Password_t.setFont(title_font);
-                Password_t.setForeground(new Color(231,161,160));
+                Password_t.setFont( new Font("제주고딕",Font.PLAIN,15));
+                Password_t.setForeground(new Color(242,34,34));
                 Password_t.setVisible(true);
                 log.setVisible(true);
                 lc_box.setVisible(true);
@@ -289,11 +292,11 @@ public class base extends JFrame {
 
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
-
+            setSize(300,50);
             System.out.println(opaque_text);
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            setBackground(new Color(192,192,192));
+            setBackground(new Color(128,128,128));
             // opaque_text = 100;
 
 
