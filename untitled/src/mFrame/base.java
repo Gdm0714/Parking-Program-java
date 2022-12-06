@@ -119,7 +119,6 @@ public class base extends JFrame {
         JLabel content_text = new JLabel("카놀라유");
         content_text.setFont(title_font);
         content_text.setBounds(250,c.getHeight()/8,600,100);
-        content_text.setFont(title_font);
         content.add(content_text);
 
         Password_t.setBounds(190,c.getHeight()/8+90,200,50);
@@ -244,8 +243,6 @@ public class base extends JFrame {
         public Announce(boolean check_info){
             this.check_info = check_info;
             circle.setVisible(false);
-
-            System.out.println(opaque_text);
             setSize(500,100);
 
             //setUndecorated(false);
@@ -262,15 +259,15 @@ public class base extends JFrame {
                             return;
                         }
 
-                        opaque_text -= 250;
+                        opaque_text -= 10;
 
                         repaint();
                         revalidate();
 
                         try {
-                            Thread.sleep(300);
+                            Thread.sleep(50);
                             if (opaque_text == 0) {
-                                Thread.sleep(10);
+                                Thread.sleep(80);
                             }
                         } catch (InterruptedException e) {
                             // TODO Auto-generated catch block
@@ -293,7 +290,6 @@ public class base extends JFrame {
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             setSize(300,50);
-            System.out.println(opaque_text);
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             setBackground(new Color(128,128,128));
@@ -306,7 +302,7 @@ public class base extends JFrame {
 
                 g2d.setColor(new Color(0,0,0,opaque_text));
 
-                g2d.drawString("success",260,20 );
+                g2d.drawString("success",115,20 );
 
             }
 

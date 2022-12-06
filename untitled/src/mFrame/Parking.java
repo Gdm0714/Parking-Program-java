@@ -12,7 +12,6 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
-import javax.swing.border.TitledBorder;
 
 import Cs_Db.Surprise_Db;
 
@@ -40,13 +39,13 @@ public class Parking extends JFrame {
             "1", "2", "3" // 추가 예정
     };
     String text_floor[] = {"1층", "2층", "3층"};
-    long d3;
+    long exitTime;
 
     String c_num;
 
     private ImageIcon car = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\enter.png");
 
-    private ImageIcon logo1 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\img_2.png");
+    private ImageIcon logo1 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\img_3.png");
 
     private ImageIcon logo2 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\입차.png");
 
@@ -58,12 +57,12 @@ public class Parking extends JFrame {
 
     //private showThread st;
 
-    private  ImageIcon bt_floor_1 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_1.png");
-    private  ImageIcon bt_floor_2 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_2.png");
-    private  ImageIcon bt_floor_3 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_3.png");
-    private  ImageIcon bt_floor_1_click = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_1_click.png");
-    private  ImageIcon bt_floor_2_click = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_2_click.png");
-    private  ImageIcon bt_floor_3_click = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_3_click.png");
+    private ImageIcon bt_floor_1 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_1.png");
+    private ImageIcon bt_floor_2 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_2.png");
+    private ImageIcon bt_floor_3 = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_3.png");
+    private ImageIcon bt_floor_1_click = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_1_click.png");
+    private ImageIcon bt_floor_2_click = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_2_click.png");
+    private ImageIcon bt_floor_3_click = new ImageIcon("C:\\Users\\고동민\\Desktop\\자바팀플 20192601 고동민\\Parking-Program-java\\untitled\\images\\bt_floor_3_click.png");
 
     private JLabel enterNotice = new JLabel();
 
@@ -72,7 +71,8 @@ public class Parking extends JFrame {
         Image img = logo1.getImage();
 
         public void paintComponent(Graphics g) {
-            g.drawImage(img, 0, 0, getWidth(), getHeight(), this);}
+            g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
+        }
     };
 
 
@@ -118,7 +118,7 @@ public class Parking extends JFrame {
     int thirdNum = 0;
 
     int j;
-    int []count = new int[63];
+    int[] count = new int[63];
     JPanel timePanel = new JPanel();
 
     public Parking(String table_name, String lc_text) {
@@ -139,14 +139,13 @@ public class Parking extends JFrame {
 
         //content.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
         //side.setBorder(new TitledBorder(new LineBorder(Color.red, 5)));
-        logo.setBorder(new MatteBorder(1,0,0,1,new Color(0,0,0)));
+        logo.setBorder(new MatteBorder(1, 0, 0, 1, new Color(0, 0, 0)));
         //header.setBorder(new TitledBorder(new LineBorder(Color.ORANGE, 5)));
 
 
+        logo.setBackground(Color.WHITE);
 
-
-
-        for(int i = 0; i<63; i++){
+        for (int i = 0; i < 63; i++) {
             count[i] = 0;
         }
         time.setFont(new Font("Serif", Font.PLAIN, 15));
@@ -190,22 +189,21 @@ public class Parking extends JFrame {
             cnt_graph[i] = 0;
             page_f[i] = new JPanel();
             page_f[i].setBackground(new Color(105, 105, 105));
-            bt_floor[i].setName(i+"");
+            bt_floor[i].setName(i + "");
             bt_floor[i].setBackground(Color.gray);
             bt_floor[i].setBorder(null);
             bt_floor[i].setContentAreaFilled(false);
             bt_floor[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    JButton field = (JButton)e.getSource();
+                    JButton field = (JButton) e.getSource();
                     int index = Integer.parseInt(field.getName());
-                    for(int i =0;i<3;i++){
+                    for (int i = 0; i < 3; i++) {
 
-                        if(i==index) {
+                        if (i == index) {
                             page_f[i].setVisible(true);
 
-                        }
-                        else{
+                        } else {
                             page_f[i].setVisible(false);
                         }
                     }
@@ -217,19 +215,19 @@ public class Parking extends JFrame {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-                    JButton field = (JButton)e.getSource();
+                    JButton field = (JButton) e.getSource();
                     int index = Integer.parseInt(field.getName());
-                    if(index == 0){
+                    if (index == 0) {
                         bt_floor[0].setIcon(changeIcon);
                         bt_floor[1].setIcon(changeIcon4);
                         bt_floor[2].setIcon(changeIcon5);
                     }
-                    if(index == 1){
+                    if (index == 1) {
                         bt_floor[1].setIcon(changeIcon1);
                         bt_floor[0].setIcon(changeIcon2);
                         bt_floor[2].setIcon(changeIcon5);
                     }
-                    if(index == 2){
+                    if (index == 2) {
                         bt_floor[2].setIcon(changeIcon3);
                         bt_floor[1].setIcon(changeIcon4);
                         bt_floor[0].setIcon(changeIcon2);
@@ -261,10 +259,10 @@ public class Parking extends JFrame {
         digitalClock.start();
 
         Color color = new Color(204, 204, 255);
-        content.setBorder(new MatteBorder(1,0,0,0,new Color(0,0,0)));
-        side.setBorder(new MatteBorder(1,0,0,1,new Color(0,0,0)));
+        content.setBorder(new MatteBorder(1, 0, 0, 0, new Color(0, 0, 0)));
+        side.setBorder(new MatteBorder(1, 0, 0, 1, new Color(0, 0, 0)));
         side.setLayout(null);
-        charge_section.setBorder(new MatteBorder(1,0,0,1,new Color(0,0,0)));
+        charge_section.setBorder(new MatteBorder(1, 0, 0, 1, new Color(0, 0, 0)));
 
         int a = 0; // 주차공간 id에 접근하기위해서 임의로 값 수정 하기위해 사용한 변수
         int stack = 0;// 주차장의 층 확인용 변수
@@ -283,12 +281,11 @@ public class Parking extends JFrame {
                 i -= 21;
                 a = 42;
             }
-            System.out.printf("" + stack);
+
 
             if (db.check_parking(i + a + 1) && stack + 1 == db.get_car_floor(i + a + 1)) {
                 entertime = db.get_Init_Time(i + a + 1);
 
-                System.out.println(i + a + 1);
 
                 //+ "시 " + entertime.getMinute() + "분"
                 c_num = db.get_Car_Num(i + a + 1);
@@ -300,7 +297,7 @@ public class Parking extends JFrame {
                 parking[i + a].setBackground(Color.pink);
                 parking[i + a].setFont(new Font("Gothic", Font.PLAIN, 20));
                 parking[i + a].setHorizontalAlignment(parking[i + a].CENTER);
-                parking[i + a].setBorder(border);
+                parking[i + a].setBorder(new LineBorder(Color.WHITE, 5));
                 parking[i + a].setOpaque(true);
                 if (stack == 0) {
                     cnt_graph[0]++;
@@ -338,8 +335,7 @@ public class Parking extends JFrame {
         gbc.ipadx = 0;
 
 
-
-        gbc.weightx = 1;
+        gbc.weightx = 0.2;
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 1;
@@ -347,7 +343,7 @@ public class Parking extends JFrame {
 
         c.add(logo, gbc);
         gbc.weightx = 0.7;
-        System.out.println(content.getSize());
+
         gbc.gridx = 1;
         gbc.gridy = 0;
         gbc.gridwidth = 3;
@@ -357,17 +353,17 @@ public class Parking extends JFrame {
 
         header.setLayout(null);
         for (int i = 0; i < 3; i++) {
-            bt_floor[i].setBounds(900+50*i,80,50,100);
+            bt_floor[i].setBounds(1100 + 50 * i, 80, 50, 100);
             header.add(bt_floor[i]);
         }
-        Font title_font = new Font("배민도현체",Font.BOLD,22);
+        Font title_font = new Font("배민도현체", Font.BOLD, 22);
         JLabel location_name = new JLabel(table_name);
         location_name.setFont(title_font);
-        location_name.setBounds(50,50,100,100);
+        location_name.setBounds(180, 50, 100, 100);
         header.add(location_name);
 
         //c.add(field_c);
-        gbc.weightx = 0.3;
+        gbc.weightx = 0.2;
         gbc.weighty = 0.7;
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -391,33 +387,36 @@ public class Parking extends JFrame {
         c.add(content, gbc);
 
 
-
         logo.add(logoLabel);
         for (j = 0; j < 62; j++) {
             parking[j].addMouseListener(new MouseAdapter() {
+
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     JLabel label = (JLabel) e.getSource();
                     int ed = Integer.parseInt(label.getName());
+                    int d = 0;
                     if (e.getClickCount() == 2) {
-                        if (count[j] == 0) {
+                        if (count[ed - 1] == 0) {
                             if (db.check_parking(ed) == true) {
                                 c_num = db.get_Car_Num(ed);
                                 entertime = db.get_Init_Time(ed);
                                 label.setIcon(null);
                                 label.setText("<html><body><center>"
-                                        + c_num + "<br><br>" + entertime.getHour()
+                                        + c_num + "<br><br>" + entertime.getMonthValue() + "월 " + entertime.getDayOfMonth() + "일 <br>"  + entertime.getHour()
                                         + "시 " + entertime.getMinute() + "분" + "</center></body></html>");
-                                label.setBackground(new Color(255, 051, 051));
-                                count[j] = 1;
+                                label.setBackground(new Color(38, 35, 36));
+                                label.setForeground(Color.WHITE);
+                                count[ed - 1] = 1;
                             }
-                        } else if (count[j] == 1) {
+                        } else if (count[ed - 1] == 1) {
                             label.setIcon(car);
                             label.setText("");
-                            count[j] = 0;
+                            count[ed - 1] = 0;
                         }
                     }
                 }
+
 
                 /*@Override
                 public void mouseEntered(MouseEvent e) {
@@ -517,10 +516,10 @@ public class Parking extends JFrame {
                     int select_index = Integer.parseInt(num.getText());
                     c_num = carnum.getText();
                     int fl = Integer.parseInt(floor.getText());
-                    if(select_index <21 && 0<select_index&&fl <4&&fl>0){
+                    if (select_index < 21 && 0 < select_index && fl < 4 && fl > 0) {
                         can_enter = true;
                     }
-                    if(can_enter){
+                    if (can_enter) {
                         if (fl == 2) {
                             select_index += 21;
                             cnt_graph[1]++;
@@ -536,19 +535,16 @@ public class Parking extends JFrame {
                             cnt_graph[0]++;
                             cnt_graph[3]--;
                         }
-                        System.out.printf(select_index + "");
                         parking[select_index - 1].setText("");
                         parking[select_index - 1].setIcon(car);
                         parking[select_index - 1].setVerticalTextPosition(SwingConstants.BOTTOM);
 
-                        System.out.println(select_index - 1 + c_num);
                         db.init_car(select_index - 1, c_num, entertime, fl);
                         side.repaint();
-                        JOptionPane.showMessageDialog(null,"입차 완료","message",JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(null, "입차 완료", "message", JOptionPane.INFORMATION_MESSAGE);
                         setVisible(false);//입력 후 창 닫기
-                    }
-                    else {
-                        JOptionPane.showMessageDialog(null,"범위 확인 해주세요","message",JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "범위 확인 해주세요", "message", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
             });
@@ -575,23 +571,23 @@ public class Parking extends JFrame {
                 }
             });
             JLabel text1 = new JLabel("차량 번호:");
-            text1.setBounds(10,20,200,50);
-            carnum.setBounds(75,20,200,50);
+            text1.setBounds(10, 20, 200, 50);
+            carnum.setBounds(75, 20, 200, 50);
             c.add(text1);
             c.add(carnum);
             JLabel text2 = new JLabel("주차 번호:");
-            text2.setBounds(10,70,200,50);
-            num.setBounds(75,70,200,50);
+            text2.setBounds(10, 70, 200, 50);
+            num.setBounds(75, 70, 200, 50);
             c.add(text2);
             c.add(num);
 
 
             JLabel text3 = new JLabel("주차 층    :");
-            text3.setBounds(10,120,200,50);
-            floor.setBounds(75,120,200,50);
+            text3.setBounds(10, 120, 200, 50);
+            floor.setBounds(75, 120, 200, 50);
             c.add(text3);
             c.add(floor);
-            en.setBounds(75,170,200,50);
+            en.setBounds(75, 170, 200, 50);
             c.add(en);
             setSize(300, 300);
             setVisible(true);
@@ -647,24 +643,26 @@ public class Parking extends JFrame {
                     boolean can_enter = false;
                     exittime = LocalDateTime.now();
 
-
-                    /*if (d3 > 60) {
-                        charge2.setText(Long.toString(d3 / 60) + "분" + Long.toString(d3 % 60) + "초");
+                    /*if (exitTime > 60) {
+                        charge2.setText(Long.toString(exitTime / 60) + "분" + Long.toString(exitTime % 60) + "초");
                     } else {
                         charge2.setText(s + "초");
                     }*/
                     int fl = Integer.parseInt(select_floor.getText());
                     int value = Integer.parseInt(num.getText());
-                    if (value < 21 && 0 < value && fl < 4 && fl > 0) {
+                    if (cnt_graph[3] < 63) {
+                        can_enter = true;
+                    } else if (value < 21 && 0 < value && fl < 4 && fl > 0) {
                         can_enter = true;
                     }
+
                     if (can_enter) {
                         d2[Integer.parseInt(num.getText()) - 1] = LocalDateTime.of(exittime.getYear(), exittime.getMonth(), exittime.getDayOfMonth(),
                                 exittime.getHour(), exittime.getMinute(), exittime.getSecond());
                         setVisible(false);
 
-                        d3 = ChronoUnit.SECONDS.between(db.get_Init_Time(Integer.parseInt(num.getText())), d2[Integer.parseInt(num.getText()) - 1]);
-                        s = Long.toString(d3);
+                        exitTime = ChronoUnit.SECONDS.between(db.get_Init_Time(Integer.parseInt(num.getText())), d2[Integer.parseInt(num.getText()) - 1]);
+                        s = Long.toString(exitTime);
                         if (fl == 2) {
                             value += 21;
                             cnt_graph[1]--;
@@ -677,13 +675,13 @@ public class Parking extends JFrame {
                             cnt_graph[0]--;
                             cnt_graph[3]++;
                         }
-                        if (d3 > 1800) {
-                            d3 -= 1800;
-                            d3 = d3 / 600 * 500 + 1500;
-                        } else if (d3 <= 1800 || d3 > 0) {
-                            d3 = 1500;
+                        if (exitTime > 600) {
+                            exitTime -= 600;
+                            exitTime = exitTime / 600 * 500 + 1500;
+                        } else if (exitTime <= 600 && exitTime > 0) {
+                            exitTime = 1500;
                         }
-                        s = Long.toString(d3);
+                        s = Long.toString(exitTime);
                         charge2.setFont(new Font("Gothic", Font.PLAIN, 15));
                         charge2.setText(db.get_Car_Num(value) + "차량의 요금은 " + s + "원 입니다");
 
@@ -695,9 +693,13 @@ public class Parking extends JFrame {
                         parking[value - 1].setText(num.getText());
                         side.repaint();
                         JOptionPane.showMessageDialog(null, "출차 완료", "message", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(null,"범위 확인 해주세요","message",JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        if (cnt_graph[3] == 63) {
+                            JOptionPane.showMessageDialog(null, "출차 가능한 차량이 없습니다.", "message", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "범위 확인 해주세요", "message", JOptionPane.INFORMATION_MESSAGE);
+                        }
+
                     }
                 }
 
@@ -709,13 +711,12 @@ public class Parking extends JFrame {
                     exittime = LocalDateTime.now();
                     int select_index = Integer.parseInt(num.getText());
                     int fl = Integer.parseInt(select_floor.getText());
-                    if(select_index >21 || 0>select_index){
+
+                    if (select_index > 21 || 0 > select_index) {
                         num.setText("범위 초과 ");
-                    }
-                    else if(fl >4||fl<0){
+                    } else if (fl > 4 || fl < 0) {
                         select_floor.setText("범위 초과");
-                    }
-                    else {
+                    } else {
                         if (fl == 2) {
                             select_index += 20;
                         } else if (fl == 3) {
@@ -733,18 +734,18 @@ public class Parking extends JFrame {
             });
             JLabel text1 = new JLabel("");
             text1.setText("주차 번호:");
-            text1.setBounds(10,20,70,50);
+            text1.setBounds(10, 20, 70, 50);
             d.add(text1);
-            num.setBounds(75,20,200,50);
+            num.setBounds(75, 20, 200, 50);
             d.add(num);
             JLabel text2 = new JLabel("");
             text2.setText("주차 층    :");
-            text2.setBounds(10,70,70,50);
+            text2.setBounds(10, 70, 70, 50);
             d.add(text2);
-            select_floor.setBounds(75,70,200,50);
+            select_floor.setBounds(75, 70, 200, 50);
 
             d.add(select_floor);
-            ex.setBounds(20,150,100,25);
+            ex.setBounds(20, 150, 100, 25);
             d.add(ex);
 
 
@@ -755,6 +756,7 @@ public class Parking extends JFrame {
         }
 
     }
+
     class Chart_Circle extends JPanel {
         public void paintComponent(Graphics g) {
             int sum = 0;
@@ -765,6 +767,7 @@ public class Parking extends JFrame {
             int startAngle = 0;
             for (int i = 0; i < floorsgraph.length; i++) {
                 g.setColor(colors[i]);
+                g.setFont(new Font("배민도현체", Font.BOLD, 14));
                 g.drawString(floorsgraph[i] + " :" + cnt_graph[i] + "", 30, 300 + i * 30);
             }
             for (int i = 0; i < floorsgraph.length; i++) {
@@ -772,20 +775,19 @@ public class Parking extends JFrame {
             }
             for (int i = 0; i < floorsgraph.length; i++) {
                 angle[i] = (int) Math.round((double) cnt_graph[i] / (double) sum * 360);
-                System.out.println(angle[i]);
                 /*
                  * repaint();s g.setColor(colors[i]);
                  * g.fillArc(150,50,200,200,startAngle,angle[i]); startAngle += angle[i];
                  */
             }
             g.setColor(pinky);
-            g.fillArc(40, 50, 200, 200, 0, angle[0]);
+            g.fillArc(50, 50, 200, 200, 0, angle[0]);
             g.setColor(shinysky);
-            g.fillArc(40, 50, 200, 200, angle[0], angle[1]);
+            g.fillArc(50, 50, 200, 200, angle[0], angle[1]);
             g.setColor(purplebubble);
-            g.fillArc(40, 50, 200, 200, angle[0] + angle[1], angle[2]);
+            g.fillArc(50, 50, 200, 200, angle[0] + angle[1], angle[2]);
             g.setColor(Color.lightGray);
-            g.fillArc(40, 50, 200, 200, angle[0] + angle[1] + angle[2], angle[3]);
+            g.fillArc(50, 50, 200, 200, angle[0] + angle[1] + angle[2], angle[3]);
 
         }
     }
