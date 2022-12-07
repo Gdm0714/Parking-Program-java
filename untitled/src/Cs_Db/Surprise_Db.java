@@ -10,7 +10,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Surprise_Db {
-    private String url = "jdbc:mysql://localhost:3306/car_surprise?serverTimezone=UTC";
+    private String tb_name;
+    private String url ="jdbc:mysql://localhost:3306/car_surprise?serverTimezone=UTC";
+
     private String user = "root";
     private String password = "0714";
     private String driverName = "com.mysql.cj.jdbc.Driver";
@@ -21,7 +23,9 @@ public class Surprise_Db {
     int re;
     PreparedStatement pstmt;
 
-
+    public Surprise_Db(String tb_name){
+        this.tb_name = tb_name;
+    }
     public void connect() {
         try {
             Class.forName(driverName);
@@ -36,20 +40,24 @@ public class Surprise_Db {
         }
     }
 
-    public void init_car(int area_id, String c_num,LocalDateTime time) {//데이터 베이스에 차량 등록 함수
+    public void init_car(int area_id, String c_num,LocalDateTime time,int floor) {//데이터 베이스에 차량 등록 함수
         try {
             area_id +=1;
             System.out.println(time);
-            String SQL1 = "update car_info set Car_Num='"+c_num+"' where ID="+area_id+";";
+            String SQL1 = "update "+tb_name+"  set Car_Num='"+c_num+"' where ID="+area_id+";";
             //System.out.println(area_id+c_num);
             System.out.println(SQL1);
             pstmt = connection.prepareStatement(SQL1);
             re = pstmt.executeUpdate();
-            SQL1 ="update car_info set Parking="+1+" where ID="+area_id+";";
+            SQL1 ="update "+tb_name+" set Parking="+1+" where ID="+area_id+";";
             pstmt = connection.prepareStatement(SQL1);
             re = pstmt.executeUpdate();
 
-            SQL1 ="update car_info set Init_Time='"+time+"' where ID="+area_id+";";
+            SQL1 ="update "+tb_name+" set Init_Time='"+time+"' where ID="+area_id+";";
+            pstmt = connection.prepareStatement(SQL1);
+            re = pstmt.executeUpdate();
+
+            SQL1 ="update "+tb_name+" set Floor='"+floor+"' where ID="+area_id+";";
             pstmt = connection.prepareStatement(SQL1);
             re = pstmt.executeUpdate();
             if(re == 1) {System.out.println("clear!");
@@ -69,8 +77,8 @@ public class Surprise_Db {
         try {
 
             System.out.println("1");
-            for(int i=1;i<22;i++) {
-                String SQL1 = "insert into car_info (ID,Parking) values ("+i+","+0+");";
+            for(int i=1;i<64;i++) {
+                String SQL1 = "insert into "+tb_name+"  (ID,Parking) values ("+i+","+0+");";
                 //System.out.println(area_id+c_num);
                 System.out.println(SQL1);
                 pstmt = connection.prepareStatement(SQL1);
@@ -93,7 +101,8 @@ public class Surprise_Db {
     }
     public boolean check_parking(int i) {//데이터 베이스에서 차가 등록 되었는지 확인 하는 함수
         try {
-            String SQL1 = "select Parking from car_info where id="+i+";";
+
+            String SQL1 = "select Parking from "+tb_name+" where id="+i+";";
             //System.out.println(area_id+c_num);
             System.out.println(SQL1);
             rs= st.executeQuery(SQL1);
@@ -112,10 +121,28 @@ public class Surprise_Db {
         }
 
     }
+    public int get_car_floor(int i){
+        try {
+            String SQL1 = "select Floor from "+tb_name+" where id="+i+";";
+            //System.out.println(area_id+c_num);
+            rs= st.executeQuery(SQL1);
+            if(rs.next()) {
+                int rt_value =rs.getInt("Floor");
+                return rt_value;
+            }
+            else return 0;
+
+
+        }
+        catch(Exception e) {
+            System.out.println("err");
+            return 0;
+        }
+    }
     public String get_Car_Num(int i) {//데이터 베이스에서 차 이름 받아와서 리턴
 
         try {
-            String SQL1 = "select Car_Num from car_info where id="+i+";";
+            String SQL1 = "select Car_Num from "+tb_name+" where id="+i+";";
             rs= st.executeQuery(SQL1);
             if(rs.next()) {
                 String car_num=rs.getString("Car_Num");
@@ -134,7 +161,7 @@ public class Surprise_Db {
         LocalDateTime Init_Time= LocalDateTime.now();
 
         try {
-            String SQL1 = "select Init_Time from car_info where id="+i+";";
+            String SQL1 = "select Init_Time from "+tb_name+" where id="+i+";";
             rs= st.executeQuery(SQL1);
             if(rs.next()) {
                 Init_Time=rs.getTimestamp("Init_Time").toLocalDateTime();
@@ -153,16 +180,23 @@ public class Surprise_Db {
     }
     public void Out_car(int i) {
         try {
-            String SQL1 = "update car_info set Car_Num="+"default"+" where ID="+i+";";
+            String SQL1 = "update "+tb_name+" set Car_Num="+"default"+" where ID="+i+";";
             pstmt = connection.prepareStatement(SQL1);
             re = pstmt.executeUpdate();
-            SQL1 ="update car_info set Parking="+0+" where ID="+i+";";
-            pstmt = connection.prepareStatement(SQL1);
-            pstmt = connection.prepareStatement(SQL1);
-            re = pstmt.executeUpdate();
-            SQL1 ="update car_info set Init_Time="+"default"+" where ID="+i+";";
+
+            SQL1 ="update "+tb_name+" set Parking="+0+" where ID="+i+";";
             pstmt = connection.prepareStatement(SQL1);
             re = pstmt.executeUpdate();
+
+            SQL1 ="update "+tb_name+" set Init_Time="+"default"+" where ID="+i+";";
+            pstmt = connection.prepareStatement(SQL1);
+            re = pstmt.executeUpdate();
+
+            SQL1 ="update "+tb_name+" set Floor="+"default"+" where ID="+i+";";
+            pstmt = connection.prepareStatement(SQL1);
+            re = pstmt.executeUpdate();
+
+
             if(rs.next()) {
             }
             else {
@@ -175,7 +209,6 @@ public class Surprise_Db {
     }
 
     public static void main(String[] args) {
-        Surprise_Db d = new Surprise_Db();
 
 
     }

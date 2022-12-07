@@ -7,7 +7,7 @@ public class DB_Connection {
     private Connection connection;
     private ResultSet rs;
     private Statement st;
-    private String url = "jdbc:mysql://localhost:3306/login?serverTimezone=UTC";
+    private String url = "jdbc:mysql://localhost:3306/car_surprise?serverTimezone=UTC";
     private String user = "root";
     private String password = "0714";
     private String driverName = "com.mysql.cj.jdbc.Driver";
@@ -32,66 +32,29 @@ public class DB_Connection {
     /** sign_Dialog의 회원가입 버튼 */
 
     /** 데이터베이스에 정보 저장 */
-    public boolean Enrollment(String myId, String myPw) {
-        try {
-            String SQL1 = "INSERT INTO log_info(user_id, user_pw) VALUES('" + myId + "','" + myPw + "');";
-            PreparedStatement pstmt = connection.prepareStatement(SQL1);
-            int re = pstmt.executeUpdate();
-            if (re == 1) {
-                return true;
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        return false;
-    }
 
-    /** sign_Dialog의 중복확인 버튼 */
-    /** 데이터베이스에서 정보 탐색 */
-    public boolean isAdmin(String id) {
-        try {
-            String SQL = "SELECT * FROM log_info WHERE user_id = '" + id + "';".toString();
-
-            rs = st.executeQuery(SQL);
-            if (rs.next()) {
-                if (rs.getString("user_id").equals(id)) {
-                    return true;
-                }
-            }
-        } catch (Exception e) {
-            System.out.println("[데이터베이스 검색 오류] : " + e.getMessage());
-        }
-        return false;
-    }
-
-    public boolean login(String id, String pw) {
+    public boolean login(String combo_item, String pw) {
         boolean id_c = false;
         boolean pw_c = false;
+        String table_pw="";
         try {
-            String SQL = "SELECT * FROM log_info WHERE user_id = '" + id + "';".toString();
+            String SQL = "SELECT myPw FROM login WHERE location = '"+combo_item+"';";
             System.out.println(SQL);
             rs = st.executeQuery(SQL);
             if(rs.next()) {
-                if(rs.getString("user_id").equals(id)) {
-                    id_c = true;
-                }
+                System.out.println(rs.getString("myPw"));
+                table_pw = rs.getString("myPw");
+                if(table_pw.equals(pw)){ ;return true;}
+                else { return false;}
             }
-            SQL = "SELECT * FROM log_info WHERE user_pw = '" + pw + "';".toString();
-            rs = st.executeQuery(SQL);
-            if(rs.next()) {
-                if(rs.getString("user_pw").equals(pw)) {
-                    pw_c = true;
-                }
-            }
-            if(id_c == true && pw_c == true) {
-                System.out.println("로그인 성공");
-                return true;
-            }
+
+            else{return false;}
         }
         catch(Exception e) {
             System.out.println("[데이터베이스 검색 오류] : " + e.getMessage());
-        }System.out.println("로그인 실패");
-        return false;
+            System.out.println("로그인 실패");
+            return false;
+        }
     }
 
     /** Login_GUI의 로그인 버튼 */
