@@ -100,6 +100,7 @@ public class base extends JFrame {
         header.setBorder(new MatteBorder(10,10,0,10,Color.white));
         JLabel title = new JLabel("  Welcome The Parking System.");
         title.setBounds(130,c.getHeight()/10,600,100);
+        //title.setForeground(new Color(215, 241, 250));
 
         title.setFont(title_font);
 
@@ -118,6 +119,7 @@ public class base extends JFrame {
         content.setLayout(null);
         JLabel content_text = new JLabel("카놀라유");
         content_text.setFont(title_font);
+        //content_text.setForeground(new Color(215, 241, 250));
         content_text.setBounds(250,c.getHeight()/8,600,100);
         content.add(content_text);
 
@@ -227,9 +229,9 @@ public class base extends JFrame {
             setBackground(new Color(128,128,128));
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setColor(new Color(121,140,53,80));
+            g2d.setColor(new Color(229, 229, 229));
             g2d.fillOval(230, 0, 100, 100);
-            g2d.setColor(new Color(242,189,29));
+            g2d.setColor(new Color(71, 70, 67));
             g2d.fill(new Arc2D.Float(230, 0,100, 100, 90, arc, Arc2D.PIE));
             g2d.setColor(new Color(128,128,128));
 

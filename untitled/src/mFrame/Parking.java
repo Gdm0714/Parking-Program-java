@@ -657,12 +657,8 @@ public class Parking extends JFrame {
                     }
 
                     if (can_enter) {
-                        d2[Integer.parseInt(num.getText()) - 1] = LocalDateTime.of(exittime.getYear(), exittime.getMonth(), exittime.getDayOfMonth(),
-                                exittime.getHour(), exittime.getMinute(), exittime.getSecond());
-                        setVisible(false);
 
-                        exitTime = ChronoUnit.SECONDS.between(db.get_Init_Time(Integer.parseInt(num.getText())), d2[Integer.parseInt(num.getText()) - 1]);
-                        s = Long.toString(exitTime);
+
                         if (fl == 2) {
                             value += 21;
                             cnt_graph[1]--;
@@ -675,10 +671,18 @@ public class Parking extends JFrame {
                             cnt_graph[0]--;
                             cnt_graph[3]++;
                         }
-                        if (exitTime > 600) {
-                            exitTime -= 600;
+
+                        d2[value-1] = LocalDateTime.of(exittime.getYear(), exittime.getMonth(), exittime.getDayOfMonth(),
+                                exittime.getHour(), exittime.getMinute(), exittime.getSecond());
+                        setVisible(false);
+
+                        exitTime = ChronoUnit.SECONDS.between(db.get_Init_Time(value), d2[value-1]);
+                        s = Long.toString(exitTime);
+                        System.out.println(exitTime+"````````````````````````````````");
+                        if (exitTime > 1800) {
+                            exitTime -= 1800;
                             exitTime = exitTime / 600 * 500 + 1500;
-                        } else if (exitTime <= 600 && exitTime > 0) {
+                        } else if (exitTime <= 1800 && exitTime > 0) {
                             exitTime = 1500;
                         }
                         s = Long.toString(exitTime);
