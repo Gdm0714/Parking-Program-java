@@ -9,6 +9,8 @@ Java GUI를 이용한 프로젝트
 
 <img src="https://github.com/Gdm0714/Parking-Program-java/assets/50660440/97e64b2f-81a5-4456-90f0-5f09f84d1fa3.png"  width="300" height="300"/>      
 
+# 주차장
+
 <img src="https://github.com/Gdm0714/Parking-Program-java/assets/50660440/05ee84b0-c3bb-43be-a3d1-021484d31392.png"  width="300" height="300"/>    
 
 # 입차
