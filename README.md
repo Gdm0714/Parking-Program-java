@@ -12,7 +12,10 @@ Java GUI를 이용한 프로젝트
 <img src="https://github.com/Gdm0714/Parking-Program-java/assets/50660440/05ee84b0-c3bb-43be-a3d1-021484d31392.png"  width="300" height="300"/>    
 
 입차 버튼을 클릭 시 차량 번호, 주차 번호, 주차 층을 입력하는 창 올라옴.
+
 <img src="https://github.com/Gdm0714/Parking-Program-java/assets/50660440/14e537d3-ca0b-4fbc-9692-e3582a3e4749.png"  width="500" height="300"/>    
 
+
 출차 버튼을 클릭 시 주차 번호, 주차 층을 입력하는 창 올라옴.
+
 <img src="https://github.com/Gdm0714/Parking-Program-java/assets/50660440/7dfc1a57-aefe-4333-b67f-888796fcfdd1.png"  width="500" height="300"/>    
