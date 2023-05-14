@@ -1,7 +1,7 @@
 # Parking-Program-java
 Java GUI를 이용한 프로젝트
 
-<img src="https://github.com/Gdm0714/Parking-Program-java/assets/50660440/edf439f6-3d36-4e84-81b4-5f00ec91c7c6.png"  width="200" height="400"/>
+<center><img src="https://github.com/Gdm0714/Parking-Program-java/assets/50660440/edf439f6-3d36-4e84-81b4-5f00ec91c7c6.png"  width="200" height="400"/></center>
 
 로그인 화면 에서 주차 장소를 선택하고 비밀번호를 입력
 
